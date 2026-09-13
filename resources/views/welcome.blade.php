@@ -65,23 +65,32 @@
             <section class="bg-gray-800 p-5 rounded-2xl shadow-xl border border-gray-700">
                 <div class="flex justify-between items-center mb-4">
                     <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider animate-pulse flex items-center gap-1.5">
-                        ● EN VIVO YOUTUBE
+                        ● YOUTUBE / STREAM
                     </span>
                     <span class="text-sm text-gray-400 font-medium">@PuntoDeEncuentroYT</span>
                 </div>
                 
+                <!-- Reproductor seguro: Reemplaza "AQUÍ_EL_ID_DE_TU_VIDEO" por el código de tu último video o directo -->
                 <div class="aspect-video w-full bg-black rounded-xl overflow-hidden relative shadow-inner">
                     <iframe class="w-full h-full" 
-                            src="https://www.youtube.com/embed/live_stream?channel=@PuntoDeEncuentroYT" 
-                            title="Punto de Encuentro Live" 
+                            src="https://www.youtube.com/embed/AQUÍ_EL_ID_DE_TU_VIDEO" 
+                            title="Punto de Encuentro - Último Video o Stream" 
                             frameborder="0" 
                             allowfullscreen>
                     </iframe>
                 </div>
 
+                <!-- Botón de respaldo rápido para entrar al directo actual -->
+                <div class="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 bg-gray-900/90 p-3.5 rounded-xl border border-gray-700">
+                    <span class="text-xs text-gray-300 text-center sm:text-left">¿Estamos en vivo ahora mismo y querés participar del chat?</span>
+                    <a href="https://www.youtube.com/@PuntoDeEncuentroYT/live" target="_blank" rel="noopener noreferrer" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2 rounded-lg transition uppercase tracking-wider flex items-center gap-1.5 shrink-0 shadow-md">
+                        <span>🔴 Ir al Stream en Vivo</span>
+                    </a>
+                </div>
+
                 <div class="mt-4">
                     <h2 class="text-xl font-black text-white">Previa & Análisis del Partido</h2>
-                    <p class="text-gray-400 text-xs mt-1">Sumate a la transmisión en directo por YouTube y opiná en el chat.</p>
+                    <p class="text-gray-400 text-xs mt-1">Mirá el contenido más reciente del canal o sumate a las transmisiones en directo.</p>
                 </div>
             </section>
         </div>
@@ -123,43 +132,40 @@
                 </a>
             </div>
 
-            <!-- Próximo Partido Dinámico (São Paulo vs Boca) -->
+            <!-- Próximo Partido Dinámico -->
             <div class="bg-gray-800 p-5 rounded-2xl border border-gray-700 shadow-xl text-center space-y-3 relative overflow-hidden">
                 <div class="flex justify-between items-center border-b border-gray-700/60 pb-2">
                     <span class="text-boca-yellow font-black uppercase text-xs tracking-widest">Próximo Encuentro</span>
                     <span class="text-[9px] bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800 font-bold">
-                        {{ $proximoPartido['competencia'] }}
+                        {{ $proximoPartido['competencia'] ?? 'Copa Libertadores' }}
                     </span>
                 </div>
 
                 <div class="grid grid-cols-7 items-center my-3">
-                    <!-- Local (São Paulo) -->
                     <div class="col-span-3 flex flex-col items-center">
                         <div class="text-2xl mb-1">🔴⚫</div>
-                        <div class="text-sm font-black text-white">{{ $proximoPartido['local'] }}</div>
+                        <div class="text-sm font-black text-white">{{ $proximoPartido['local'] ?? 'São Paulo' }}</div>
                         <span class="text-[9px] text-gray-400 uppercase font-semibold">Local</span>
                     </div>
                     
-                    <!-- VS / Vuelta -->
                     <div class="col-span-1 flex flex-col items-center justify-center">
                         <div class="text-boca-yellow font-black text-xs px-2 py-1 bg-gray-900 rounded-lg border border-gray-700">VS</div>
                         <span class="text-[8px] text-boca-yellow font-extrabold mt-0.5">VUELTA</span>
                     </div>
 
-                    <!-- Visitante (Boca) -->
                     <div class="col-span-3 flex flex-col items-center">
                         <div class="text-2xl mb-1">⭐</div>
-                        <div class="text-sm font-black text-boca-yellow">{{ $proximoPartido['visitante'] }}</div>
+                        <div class="text-sm font-black text-boca-yellow">{{ $proximoPartido['visitante'] ?? 'Boca Juniors' }}</div>
                         <span class="text-[9px] text-gray-400 uppercase font-semibold">Visitante</span>
                     </div>
                 </div>
 
                 <div class="space-y-1.5 pt-1">
                     <div class="text-xs text-gray-200 bg-gray-900/80 py-2 px-3 rounded-xl border border-gray-700/70 font-medium">
-                        🏟️ {{ $proximoPartido['estadio'] }} • <span class="text-boca-yellow font-bold">{{ $proximoPartido['fecha_hora'] }}</span>
+                        🏟️ {{ $proximoPartido['estadio'] ?? 'Estadio Morumbí' }} • <span class="text-boca-yellow font-bold">{{ $proximoPartido['fecha_hora'] ?? 'A confirmar' }}</span>
                     </div>
                     <div class="text-[10px] text-gray-400 bg-gray-900/40 py-1 px-2 rounded-lg border border-gray-800">
-                        ⚖️ Árbitro: <strong class="text-gray-200">{{ $proximoPartido['arbitro'] }}</strong>
+                        ⚖️ Árbitro: <strong class="text-gray-200">{{ $proximoPartido['arbitro'] ?? 'A confirmar' }}</strong>
                     </div>
                 </div>
             </div>
