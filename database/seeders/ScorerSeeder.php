@@ -3,23 +3,26 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Scorer;
 
 class ScorerSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('scorers')->insert([
-            ['name' => 'Martín Palermo', 'nickname' => 'El Titán', 'goals' => 236, 'matches' => 404, 'years' => '1997-2011'],
-            ['name' => 'Roberto Cherro', 'nickname' => 'Cabecita de Oro', 'goals' => 223, 'matches' => 305, 'years' => '1926-1938'],
-            ['name' => 'Francisco Varallo', 'nickname' => 'Pancho', 'goals' => 194, 'matches' => 222, 'years' => '1931-1939'],
-            ['name' => 'Domingo Tarasconi', 'nickname' => 'Tarasca', 'goals' => 192, 'matches' => 236, 'years' => '1922-1932'],
-            ['name' => 'Jaime Sarlanga', 'nickname' => 'Pila', 'goals' => 129, 'matches' => 220, 'years' => '1940-1948'],
-            ['name' => 'Mario Boyé', 'nickname' => 'El Atómico', 'goals' => 124, 'matches' => 228, 'years' => '1941-1955'],
-            ['name' => 'Delfín Benítez Cáceres', 'nickname' => 'Machetero', 'goals' => 114, 'matches' => 176, 'years' => '1932-1938'],
-            ['name' => 'Carlos Tévez', 'nickname' => 'El Apache', 'goals' => 94, 'matches' => 279, 'years' => '2001-2021'],
-            ['name' => 'Juan Román Riquelme', 'nickname' => 'El Último 10', 'goals' => 92, 'matches' => 388, 'years' => '1996-2014'],
-            ['name' => 'Pio Corcuera', 'nickname' => 'Pio', 'goals' => 90, 'matches' => 187, 'years' => '1941-1948'],
-        ]);
+        Scorer::truncate();
+
+        $scorers = [
+            ['position' => 1, 'name' => 'Martín Palermo', 'nickname' => 'El Titán', 'matches' => 404, 'goals' => 236, 'years' => '1997-2011'],
+            ['position' => 2, 'name' => 'Roberto Cherro', 'nickname' => 'Cabecita de Oro', 'matches' => 300, 'goals' => 218, 'years' => '1926-1938'],
+            ['position' => 3, 'name' => 'Francisco Varallo', 'nickname' => 'Pancho', 'matches' => 222, 'goals' => 194, 'years' => '1931-1939'],
+            ['position' => 4, 'name' => 'Domingo Tarasconi', 'nickname' => 'Tarasca', 'matches' => 236, 'goals' => 192, 'years' => '1922-1932'],
+            ['position' => 5, 'name' => 'Jaime Sarlanga', 'nickname' => 'Piraña', 'matches' => 220, 'goals' => 129, 'years' => '1940-1948'],
+            ['position' => 6, 'name' => 'Carlos Tevez', 'nickname' => 'El Apache', 'matches' => 279, 'goals' => 94, 'years' => '2001-2021'],
+            ['position' => 7, 'name' => 'Juan Román Riquelme', 'nickname' => 'El Último 10', 'matches' => 388, 'goals' => 92, 'years' => '1996-2014'],
+        ];
+
+        foreach ($scorers as $scorer) {
+            Scorer::create($scorer);
+        }
     }
 }
