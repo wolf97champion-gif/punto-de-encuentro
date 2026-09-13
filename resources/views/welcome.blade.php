@@ -70,11 +70,11 @@
                     <span class="text-sm text-gray-400 font-medium">@PuntoDeEncuentroYT</span>
                 </div>
                 
-                <!-- Reproductor configurado para mostrar transmisiones en vivo automáticas o videos del canal -->
+                <!-- Reproductor con tu último video/stream cargado correctamente -->
                 <div class="aspect-video w-full bg-black rounded-xl overflow-hidden relative shadow-inner">
                     <iframe class="w-full h-full" 
-                            src="https://www.youtube.com/embed?listType=user_uploads&list=PuntoDeEncuentroYT" 
-                            title="Punto de Encuentro - Stream y Videos" 
+                            src="https://www.youtube.com/embed/It-xG6qLVmM" 
+                            title="Punto de Encuentro - Último Video o Stream" 
                             frameborder="0" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             allowfullscreen>
