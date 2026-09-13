@@ -1,13 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Models\Vote;
+use Illuminate\Support\Facades\DB;
 
 // Home / Stream
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Página de Goleadores (Pasa directamente la lista completa de 25 goleadores a la vista)
+// Página de Goleadores
 Route::get('/goleadores', function () {
     $scorers = collect([
         (object)['position' => 1, 'name' => 'Martín Palermo', 'nickname' => 'El Titán', 'matches' => 404, 'goals' => 236, 'years' => '1997-2011'],
@@ -45,12 +48,46 @@ Route::get('/podio', function () {
     return view('podium');
 });
 
+// Guardar los 3 votos seleccionados
+Route::post('/podio/votar', function (Request $request) {
+    $votes = $request->input('votes'); // Array con 3 elementos
+    
+    if (is_array($votes)) {
+        foreach ($votes as $vote) {
+            Vote::create([
+                'player_name' => $vote['name'],
+                'position' => $vote['position']
+            ]);
+        }
+    }
+
+    return response()->json(['status' => 'success']);
+});
+
 // Página de Tablas y Posiciones
 Route::get('/tablas', function () {
     return view('tables');
 });
 
-// Panel Admin (Dashboard para controlar votos)
+// Panel Admin Dinámico
 Route::get('/admin', function () {
-    return view('admin');
+    $results = Vote::select('player_name',
+        DB::raw('SUM(CASE WHEN position = 1 THEN 1 ELSE 0 END) as v1'),
+        DB::raw('SUM(CASE WHEN position = 2 THEN 1 ELSE 0 END) as v2'),
+        DB::raw('SUM(CASE WHEN position = 3 THEN 1 ELSE 0 END) as v3'),
+        DB::raw('SUM(CASE WHEN position = 1 THEN 3 WHEN position = 2 THEN 2 WHEN position = 3 THEN 1 ELSE 0 END) as points')
+    )
+    ->groupBy('player_name')
+    ->orderByDesc('points')
+    ->get();
+
+    $totalSubmissions = Vote::count() / 3; // Cantidad total de personas que votaron
+
+    return view('admin', compact('results', 'totalSubmissions'));
+});
+
+// Reiniciar la Votación Completa
+Route::post('/admin/reset', function () {
+    Vote::truncate();
+    return redirect('/admin');
 });

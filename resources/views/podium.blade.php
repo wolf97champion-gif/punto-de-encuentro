@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Votación del Podio - Punto de Encuentro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -316,6 +317,29 @@
 
         function confirmPodium() {
             if (selected.length !== 3) return;
+
+            // Enviar selección al backend
+            fetch('/podio/votar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    votes: [
+                        { name: selected[0].name, position: 1 },
+                        { name: selected[1].name, position: 2 },
+                        { name: selected[2].name, position: 3 }
+                    ]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Voto guardado:', data);
+            })
+            .catch(error => {
+                console.error('Error al registrar el voto:', error);
+            });
 
             // Cargar datos en el Dashboard Festejo
             for (let i = 1; i <= 3; i++) {

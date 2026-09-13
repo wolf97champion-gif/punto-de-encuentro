@@ -45,26 +45,39 @@
                 </h2>
                 <p class="text-xs text-gray-400 mt-1">Resumen general y métricas acumuladas de la votación de la hinchada.</p>
             </div>
-            <button onclick="location.reload()" class="bg-boca-yellow hover:bg-yellow-400 text-boca-blue font-black px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow">
-                🔄 Actualizar Datos
-            </button>
+            
+            <div class="flex items-center gap-3">
+                <button onclick="location.reload()" class="bg-boca-yellow hover:bg-yellow-400 text-boca-blue font-black px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow">
+                    🔄 Actualizar
+                </button>
+                <form action="/admin/reset" method="POST" onsubmit="return confirm('¿Estás seguro de reiniciar todos los votos del partido?');">
+                    @csrf
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-black px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow">
+                        🗑️ Reiniciar Votación
+                    </button>
+                </form>
+            </div>
         </div>
 
         <!-- Tarjetas de Métricas Rápidas -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div class="bg-gray-800/90 border border-gray-700 p-6 rounded-2xl shadow-lg">
-                <div class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Votos Registrados</div>
-                <div class="text-3xl font-black text-white mt-2">1,248 <span class="text-xs font-normal text-green-400">+18% hoy</span></div>
+                <div class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Hinchas Votantes</div>
+                <div class="text-3xl font-black text-white mt-2">{{ floor($totalSubmissions) }}</div>
             </div>
             <div class="bg-gray-800/90 border border-boca-yellow/50 p-6 rounded-2xl shadow-lg">
-                <div class="text-xs text-boca-yellow font-bold uppercase tracking-wider">Jugador Mas Votado (MVP)</div>
-                <div class="text-2xl font-black text-white mt-2">Leandro Paredes</div>
-                <div class="text-[11px] text-gray-400">412 votos de 1.º Puesto</div>
+                <div class="text-xs text-boca-yellow font-bold uppercase tracking-wider">Jugador Más Votado (MVP)</div>
+                <div class="text-2xl font-black text-white mt-2">
+                    {{ $results->first()->player_name ?? 'Sin votos' }}
+                </div>
+                <div class="text-[11px] text-gray-400">
+                    {{ $results->first()->points ?? 0 }} puntos acumulados
+                </div>
             </div>
             <div class="bg-gray-800/90 border border-gray-700 p-6 rounded-2xl shadow-lg">
-                <div class="text-xs text-gray-400 font-bold uppercase tracking-wider">Participación Estimada</div>
-                <div class="text-3xl font-black text-white mt-2">84.2%</div>
-                <div class="text-[11px] text-gray-400">Usuarios del vivo interactuando</div>
+                <div class="text-xs text-gray-400 font-bold uppercase tracking-wider">Estado del Conteo</div>
+                <div class="text-3xl font-black text-green-400 mt-2">ACTIVO</div>
+                <div class="text-[11px] text-gray-400">Recibiendo respuestas</div>
             </div>
         </div>
 
@@ -79,27 +92,30 @@
                 <div class="bg-gray-900/90 border-2 border-boca-yellow p-6 rounded-2xl text-center space-y-2 relative shadow-xl md:-translate-y-2">
                     <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-boca-yellow text-boca-blue text-[10px] font-black px-3 py-0.5 rounded-full uppercase">1.º Puesto Global</span>
                     <div class="text-3xl mt-2">🥇</div>
-                    <div class="text-xl font-black text-white">Leandro Paredes</div>
-                    <div class="text-xs text-boca-yellow font-bold uppercase">Mediocampista</div>
-                    <div class="bg-gray-800 py-1.5 px-3 rounded-lg text-xs font-mono text-gray-300 border border-gray-700 mt-2">845 Puntos Totales</div>
+                    <div class="text-xl font-black text-white">{{ $results[0]->player_name ?? '-' }}</div>
+                    <div class="bg-gray-800 py-1.5 px-3 rounded-lg text-xs font-mono text-gray-300 border border-gray-700 mt-2">
+                        {{ $results[0]->points ?? 0 }} Puntos Totales
+                    </div>
                 </div>
 
                 <!-- 2° Puesto -->
                 <div class="bg-gray-900/80 border border-blue-400/50 p-6 rounded-2xl text-center space-y-2 shadow-lg">
                     <span class="text-xs text-blue-400 font-black uppercase">2.º Puesto Global</span>
                     <div class="text-3xl">🥈</div>
-                    <div class="text-lg font-black text-white">Miguel Merentiel</div>
-                    <div class="text-xs text-blue-400 font-bold uppercase">Delantero</div>
-                    <div class="bg-gray-800 py-1.5 px-3 rounded-lg text-xs font-mono text-gray-300 border border-gray-700 mt-2">612 Puntos Totales</div>
+                    <div class="text-lg font-black text-white">{{ $results[1]->player_name ?? '-' }}</div>
+                    <div class="bg-gray-800 py-1.5 px-3 rounded-lg text-xs font-mono text-gray-300 border border-gray-700 mt-2">
+                        {{ $results[1]->points ?? 0 }} Puntos Totales
+                    </div>
                 </div>
 
                 <!-- 3° Puesto -->
                 <div class="bg-gray-900/80 border border-orange-400/50 p-6 rounded-2xl text-center space-y-2 shadow-lg">
                     <span class="text-xs text-orange-400 font-black uppercase">3.º Puesto Global</span>
                     <div class="text-3xl">🥉</div>
-                    <div class="text-lg font-black text-white">Leandro Brey</div>
-                    <div class="text-xs text-orange-400 font-bold uppercase">Arquero</div>
-                    <div class="bg-gray-800 py-1.5 px-3 rounded-lg text-xs font-mono text-gray-300 border border-gray-700 mt-2">480 Puntos Totales</div>
+                    <div class="text-lg font-black text-white">{{ $results[2]->player_name ?? '-' }}</div>
+                    <div class="bg-gray-800 py-1.5 px-3 rounded-lg text-xs font-mono text-gray-300 border border-gray-700 mt-2">
+                        {{ $results[2]->points ?? 0 }} Puntos Totales
+                    </div>
                 </div>
             </div>
         </section>
@@ -115,7 +131,6 @@
                     <thead class="bg-gray-900 text-boca-yellow uppercase font-black border-b border-gray-700">
                         <tr>
                             <th class="p-3">Jugador</th>
-                            <th class="p-3">Posición</th>
                             <th class="p-3 text-center">Votos 1° (🥇)</th>
                             <th class="p-3 text-center">Votos 2° (🥈)</th>
                             <th class="p-3 text-center">Votos 3° (🥉)</th>
@@ -123,46 +138,19 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-700/60 font-medium text-gray-200">
+                        @forelse($results as $row)
                         <tr class="hover:bg-gray-700/30 transition">
-                            <td class="p-3 font-bold text-white">Leandro Paredes</td>
-                            <td class="p-3 text-gray-400">MED</td>
-                            <td class="p-3 text-center font-bold text-boca-yellow">210</td>
-                            <td class="p-3 text-center">85</td>
-                            <td class="p-3 text-center">45</td>
-                            <td class="p-3 text-right font-black text-boca-yellow text-sm">845 pts</td>
+                            <td class="p-3 font-bold text-white">{{ $row->player_name }}</td>
+                            <td class="p-3 text-center font-bold text-boca-yellow">{{ $row->v1 }}</td>
+                            <td class="p-3 text-center text-blue-400">{{ $row->v2 }}</td>
+                            <td class="p-3 text-center text-orange-400">{{ $row->v3 }}</td>
+                            <td class="p-3 text-right font-black text-boca-yellow text-sm">{{ $row->points }} pts</td>
                         </tr>
-                        <tr class="hover:bg-gray-700/30 transition">
-                            <td class="p-3 font-bold text-white">Miguel Merentiel</td>
-                            <td class="p-3 text-gray-400">DEL</td>
-                            <td class="p-3 text-center">140</td>
-                            <td class="p-3 text-center font-bold text-blue-400">110</td>
-                            <td class="p-3 text-center">32</td>
-                            <td class="p-3 text-right font-black text-blue-400 text-sm">612 pts</td>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="p-4 text-center text-gray-500">No hay votos registrados todavía.</td>
                         </tr>
-                        <tr class="hover:bg-gray-700/30 transition">
-                            <td class="p-3 font-bold text-white">Leandro Brey</td>
-                            <td class="p-3 text-gray-400">ARQ</td>
-                            <td class="p-3 text-center">95</td>
-                            <td class="p-3 text-center">70</td>
-                            <td class="p-3 text-center font-bold text-orange-400">55</td>
-                            <td class="p-3 text-right font-black text-orange-400 text-sm">480 pts</td>
-                        </tr>
-                        <tr class="hover:bg-gray-700/30 transition">
-                            <td class="p-3 font-bold text-white">Lautaro Blanco</td>
-                            <td class="p-3 text-gray-400">DEF</td>
-                            <td class="p-3 text-center">45</td>
-                            <td class="p-3 text-center">60</td>
-                            <td class="p-3 text-center">80</td>
-                            <td class="p-3 text-right font-black text-gray-300 text-sm">335 pts</td>
-                        </tr>
-                        <tr class="hover:bg-gray-700/30 transition">
-                            <td class="p-3 font-bold text-white">Carlos Palacios</td>
-                            <td class="p-3 text-gray-400">MED</td>
-                            <td class="p-3 text-center">30</td>
-                            <td class="p-3 text-center">42</td>
-                            <td class="p-3 text-center">50</td>
-                            <td class="p-3 text-right font-black text-gray-300 text-sm">224 pts</td>
-                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -174,5 +162,11 @@
         <p>© 2026 Punto de Encuentro — Panel Privado de Administración</p>
     </footer>
 
+    <script>
+        // Actualización automática cada 10 segundos
+        setInterval(() => {
+            location.reload();
+        }, 10000);
+    </script>
 </body>
 </html>
