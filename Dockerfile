@@ -6,5 +6,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 RUN composer install --no-dev --optimize-autoloader
+
+# Preparar base de datos y clave de Laravel
+RUN touch database/database.sqlite
+RUN cp .env.example .env
+RUN php artisan key:generate
+
 EXPOSE 10000
-CMD php artisan serve --host 0.0.0.0 --port 10000
+CMD php artisan migrate --force && php artisan serve --host 0.0.0.0 --port 10000
