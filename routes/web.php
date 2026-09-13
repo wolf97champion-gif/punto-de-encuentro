@@ -100,3 +100,8 @@ Route::post('/admin/reset', function () {
     Vote::truncate();
     return redirect('/admin');
 });
+
+// Página Quién Soy / Sobre Mí (Agregada sin romper nada)
+Route::get('/quien-soy', function () {
+    return view('quienes-somos');
+});

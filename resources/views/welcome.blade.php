@@ -29,6 +29,7 @@
                 <a href="/goleadores" class="hover:text-boca-yellow transition">Goleadores</a>
                 <a href="/podio" class="hover:text-boca-yellow transition">Podio del Partido</a>
                 <a href="/tablas" class="hover:text-boca-yellow transition">Tablas & Posiciones</a>
+                <a href="/quien-soy" class="hover:text-boca-yellow transition">Quién Soy</a>
             </nav>
         </div>
     </header>
@@ -97,7 +98,7 @@
                         <span class="text-xl">🎵</span>
                         <h3 class="text-lg font-black text-white uppercase tracking-wide">TikTok Live & Videos</h3>
                     </div>
-                    <span class="bg-pink-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest animate-bounce">
+                    <span class="text-pink-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest animate-bounce">
                         @michaelnovoa16
                     </span>
                 </div>
