@@ -70,10 +70,10 @@
                     <span class="text-sm text-gray-400 font-medium">@PuntoDeEncuentroYT</span>
                 </div>
                 
-                <!-- Reproductor seguro: Reemplaza "AQUÍ_EL_ID_DE_TU_VIDEO" por el código de tu último video o directo -->
+                <!-- Reproductor seguro: Reemplaza "src="https://www.youtube.com/embed/AbCdEf12345"" por el código de tu último video o directo -->
                 <div class="aspect-video w-full bg-black rounded-xl overflow-hidden relative shadow-inner">
                     <iframe class="w-full h-full" 
-                            src="https://www.youtube.com/embed/AQUÍ_EL_ID_DE_TU_VIDEO" 
+                            src="https://www.youtube.com/embed/AbCdEf12345" 
                             title="Punto de Encuentro - Último Video o Stream" 
                             frameborder="0" 
                             allowfullscreen>
