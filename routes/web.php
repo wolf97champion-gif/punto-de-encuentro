@@ -4,10 +4,21 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\Vote;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\StandingsController;
 
 // Home / Stream
 Route::get('/', function () {
-    return view('welcome');
+    $proximoPartido = [
+        'local' => 'São Paulo',
+        'visitante' => 'Boca Jrs.',
+        'condicion' => 'VISITANTE (Vuelta)',
+        'estadio' => 'Morumbi, São Paulo',
+        'fecha_hora' => 'Martes 15/09 — 21:30 hs',
+        'competencia' => 'CONMEBOL Sudamericana — 4tos de Final',
+        'arbitro' => 'Gustavo Tejera (URU)'
+    ];
+
+    return view('welcome', compact('proximoPartido'));
 });
 
 // Página de Goleadores
@@ -50,7 +61,7 @@ Route::get('/podio', function () {
 
 // Guardar los 3 votos seleccionados
 Route::post('/podio/votar', function (Request $request) {
-    $votes = $request->input('votes'); // Array con 3 elementos
+    $votes = $request->input('votes');
     
     if (is_array($votes)) {
         foreach ($votes as $vote) {
@@ -64,10 +75,8 @@ Route::post('/podio/votar', function (Request $request) {
     return response()->json(['status' => 'success']);
 });
 
-// Página de Tablas y Posiciones
-Route::get('/tablas', function () {
-    return view('tables');
-});
+// Página de Tablas y Posiciones (Consumiendo el Web Scraper)
+Route::get('/tablas', [StandingsController::class, 'index']);
 
 // Panel Admin Dinámico
 Route::get('/admin', function () {
@@ -81,7 +90,7 @@ Route::get('/admin', function () {
     ->orderByDesc('points')
     ->get();
 
-    $totalSubmissions = Vote::count() / 3; // Cantidad total de personas que votaron
+    $totalSubmissions = Vote::count() / 3;
 
     return view('admin', compact('results', 'totalSubmissions'));
 });

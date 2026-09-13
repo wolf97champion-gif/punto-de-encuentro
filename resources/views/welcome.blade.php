@@ -122,23 +122,45 @@
                 </a>
             </div>
 
-            <!-- Próximo Partido -->
-            <div class="bg-boca-blue p-5 rounded-2xl border border-boca-yellow shadow-xl text-center">
-                <h3 class="text-boca-yellow font-black uppercase text-xs tracking-widest mb-3">Próximo Encuentro</h3>
-                <div class="flex justify-around items-center my-4">
-                    <div class="text-center">
-                        <div class="text-2xl font-black text-white">BOCA</div>
-                        <span class="text-[10px] text-gray-300 uppercase font-semibold">Local</span>
+            <!-- Próximo Partido Dinámico (São Paulo vs Boca) -->
+            <div class="bg-gray-800 p-5 rounded-2xl border border-gray-700 shadow-xl text-center space-y-3 relative overflow-hidden">
+                <div class="flex justify-between items-center border-b border-gray-700/60 pb-2">
+                    <span class="text-boca-yellow font-black uppercase text-xs tracking-widest">Próximo Encuentro</span>
+                    <span class="text-[9px] bg-red-950 text-red-300 px-2 py-0.5 rounded border border-red-800 font-bold">
+                        {{ $proximoPartido['competencia'] }}
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-7 items-center my-3">
+                    <!-- Local (São Paulo) -->
+                    <div class="col-span-3 flex flex-col items-center">
+                        <div class="text-2xl mb-1">🔴⚫</div>
+                        <div class="text-sm font-black text-white">{{ $proximoPartido['local'] }}</div>
+                        <span class="text-[9px] text-gray-400 uppercase font-semibold">Local</span>
                     </div>
-                    <div class="text-boca-yellow font-black text-xl px-2.5 py-1 bg-gray-900/40 rounded-lg">VS</div>
-                    <div class="text-center">
-                        <div class="text-2xl font-black text-gray-300">RIVAL</div>
-                        <span class="text-[10px] text-gray-400 uppercase font-semibold">Visitante</span>
+                    
+                    <!-- VS / Vuelta -->
+                    <div class="col-span-1 flex flex-col items-center justify-center">
+                        <div class="text-boca-yellow font-black text-xs px-2 py-1 bg-gray-900 rounded-lg border border-gray-700">VS</div>
+                        <span class="text-[8px] text-boca-yellow font-extrabold mt-0.5">VUELTA</span>
+                    </div>
+
+                    <!-- Visitante (Boca) -->
+                    <div class="col-span-3 flex flex-col items-center">
+                        <div class="text-2xl mb-1">⭐</div>
+                        <div class="text-sm font-black text-boca-yellow">{{ $proximoPartido['visitante'] }}</div>
+                        <span class="text-[9px] text-gray-400 uppercase font-semibold">Visitante</span>
                     </div>
                 </div>
-                <p class="text-xs text-gray-300 bg-gray-900/60 py-2 px-3 rounded-xl border border-gray-700/50">
-                    📍 La Bombonera — Domingo 21:00 hs
-                </p>
+
+                <div class="space-y-1.5 pt-1">
+                    <div class="text-xs text-gray-200 bg-gray-900/80 py-2 px-3 rounded-xl border border-gray-700/70 font-medium">
+                        🏟️ {{ $proximoPartido['estadio'] }} • <span class="text-boca-yellow font-bold">{{ $proximoPartido['fecha_hora'] }}</span>
+                    </div>
+                    <div class="text-[10px] text-gray-400 bg-gray-900/40 py-1 px-2 rounded-lg border border-gray-800">
+                        ⚖️ Árbitro: <strong class="text-gray-200">{{ $proximoPartido['arbitro'] }}</strong>
+                    </div>
+                </div>
             </div>
 
         </aside>
