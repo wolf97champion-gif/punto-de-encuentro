@@ -49,3 +49,8 @@ Route::get('/podio', function () {
 Route::get('/tablas', function () {
     return view('tables');
 });
+
+// Panel Admin (Dashboard para controlar votos)
+Route::get('/admin', function () {
+    return view('admin');
+});
