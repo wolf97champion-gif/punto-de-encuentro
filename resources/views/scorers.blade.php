@@ -61,7 +61,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-700/60">
-                        @foreach($scorers as $index => $scorer)
+                        @forelse($scorers as $index => $scorer)
                             <tr class="hover:bg-gray-700/50 transition duration-150">
                                 <td class="py-3.5 px-4 font-black text-center text-boca-yellow text-base">{{ $index + 1 }}</td>
                                 <td class="py-3.5 px-4 font-bold text-white text-base">{{ $scorer->name }}</td>
@@ -73,7 +73,72 @@
                                 </td>
                                 <td class="py-3.5 px-4 text-center text-xs text-gray-400 font-mono">{{ $scorer->years }}</td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <!-- Fallback directo si no hay registros en la BD -->
+                            <tr class="hover:bg-gray-700/50 transition duration-150">
+                                <td class="py-3.5 px-4 font-black text-center text-boca-yellow text-base">1</td>
+                                <td class="py-3.5 px-4 font-bold text-white text-base">Martín Palermo</td>
+                                <td class="py-3.5 px-4 italic text-gray-400 text-sm">El Titán</td>
+                                <td class="py-3.5 px-4 text-center text-gray-300 font-medium">404</td>
+                                <td class="py-3.5 px-4 text-center font-black text-boca-yellow text-lg">236</td>
+                                <td class="py-3.5 px-4 text-center font-semibold text-gray-200">0.58</td>
+                                <td class="py-3.5 px-4 text-center text-xs text-gray-400 font-mono">1997-2011</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition duration-150">
+                                <td class="py-3.5 px-4 font-black text-center text-boca-yellow text-base">2</td>
+                                <td class="py-3.5 px-4 font-bold text-white text-base">Roberto Cherro</td>
+                                <td class="py-3.5 px-4 italic text-gray-400 text-sm">Cabecita de Oro</td>
+                                <td class="py-3.5 px-4 text-center text-gray-300 font-medium">300</td>
+                                <td class="py-3.5 px-4 text-center font-black text-boca-yellow text-lg">218</td>
+                                <td class="py-3.5 px-4 text-center font-semibold text-gray-200">0.73</td>
+                                <td class="py-3.5 px-4 text-center text-xs text-gray-400 font-mono">1926-1938</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition duration-150">
+                                <td class="py-3.5 px-4 font-black text-center text-boca-yellow text-base">3</td>
+                                <td class="py-3.5 px-4 font-bold text-white text-base">Francisco Varallo</td>
+                                <td class="py-3.5 px-4 italic text-gray-400 text-sm">Pancho</td>
+                                <td class="py-3.5 px-4 text-center text-gray-300 font-medium">222</td>
+                                <td class="py-3.5 px-4 text-center font-black text-boca-yellow text-lg">194</td>
+                                <td class="py-3.5 px-4 text-center font-semibold text-gray-200">0.87</td>
+                                <td class="py-3.5 px-4 text-center text-xs text-gray-400 font-mono">1931-1939</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition duration-150">
+                                <td class="py-3.5 px-4 font-black text-center text-boca-yellow text-base">4</td>
+                                <td class="py-3.5 px-4 font-bold text-white text-base">Domingo Tarasconi</td>
+                                <td class="py-3.5 px-4 italic text-gray-400 text-sm">Tarasca</td>
+                                <td class="py-3.5 px-4 text-center text-gray-300 font-medium">236</td>
+                                <td class="py-3.5 px-4 text-center font-black text-boca-yellow text-lg">192</td>
+                                <td class="py-3.5 px-4 text-center font-semibold text-gray-200">0.81</td>
+                                <td class="py-3.5 px-4 text-center text-xs text-gray-400 font-mono">1922-1932</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition duration-150">
+                                <td class="py-3.5 px-4 font-black text-center text-boca-yellow text-base">5</td>
+                                <td class="py-3.5 px-4 font-bold text-white text-base">Jaime Sarlanga</td>
+                                <td class="py-3.5 px-4 italic text-gray-400 text-sm">Piraña</td>
+                                <td class="py-3.5 px-4 text-center text-gray-300 font-medium">220</td>
+                                <td class="py-3.5 px-4 text-center font-black text-boca-yellow text-lg">129</td>
+                                <td class="py-3.5 px-4 text-center font-semibold text-gray-200">0.59</td>
+                                <td class="py-3.5 px-4 text-center text-xs text-gray-400 font-mono">1940-1948</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition duration-150">
+                                <td class="py-3.5 px-4 font-black text-center text-boca-yellow text-base">6</td>
+                                <td class="py-3.5 px-4 font-bold text-white text-base">Carlos Tevez</td>
+                                <td class="py-3.5 px-4 italic text-gray-400 text-sm">El Apache</td>
+                                <td class="py-3.5 px-4 text-center text-gray-300 font-medium">279</td>
+                                <td class="py-3.5 px-4 text-center font-black text-boca-yellow text-lg">94</td>
+                                <td class="py-3.5 px-4 text-center font-semibold text-gray-200">0.34</td>
+                                <td class="py-3.5 px-4 text-center text-xs text-gray-400 font-mono">2001-2021</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition duration-150">
+                                <td class="py-3.5 px-4 font-black text-center text-boca-yellow text-base">7</td>
+                                <td class="py-3.5 px-4 font-bold text-white text-base">Juan Román Riquelme</td>
+                                <td class="py-3.5 px-4 italic text-gray-400 text-sm">El Último 10</td>
+                                <td class="py-3.5 px-4 text-center text-gray-300 font-medium">388</td>
+                                <td class="py-3.5 px-4 text-center font-black text-boca-yellow text-lg">92</td>
+                                <td class="py-3.5 px-4 text-center font-semibold text-gray-200">0.24</td>
+                                <td class="py-3.5 px-4 text-center text-xs text-gray-400 font-mono">1996-2014</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
