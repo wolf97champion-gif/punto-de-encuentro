@@ -83,7 +83,38 @@
                 </div>
             </div>
 
-            <div class="text-center pt-4">
+            <!-- Sección de Contacto y Colaboración -->
+            <div class="bg-gray-950/60 p-6 rounded-2xl border border-gray-700/80 space-y-4 mt-6">
+                <h4 class="text-sm font-black text-boca-yellow uppercase tracking-wider flex items-center gap-2">
+                    <span>🤝</span> Contacto & Colaboración con el Canal
+                </h4>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <!-- Medios de contacto -->
+                    <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 space-y-2">
+                        <div class="font-bold text-white uppercase tracking-wide">📩 Canales de Contacto</div>
+                        <p class="text-gray-300 flex items-center gap-2">
+                            <span>📧</span> Email: <a href="mailto:wolf97champion@gmail.com" class="text-boca-yellow hover:underline font-medium">wolf97champion@gmail.com</a>
+                        </p>
+                        <p class="text-gray-300 flex items-center gap-2">
+                            <span>📱</span> WhatsApp: <a href="https://wa.me/5492241623110" target="_blank" class="text-boca-yellow hover:underline font-medium">2241-623110</a>
+                        </p>
+                    </div>
+
+                    <!-- Mercado Pago -->
+                    <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 space-y-2">
+                        <div class="font-bold text-white uppercase tracking-wide">☕ Colaboraciones (Cafecito / MP)</div>
+                        <p class="text-gray-300 flex items-center gap-2">
+                            <span>💸</span> Alias: <strong class="text-boca-yellow font-mono text-sm">michael.ok.mp</strong>
+                        </p>
+                        <p class="text-gray-400 text-[11px]">
+                            Titular: <span class="text-gray-200 font-medium">Michael Darian Novoa y Gonzalez</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center pt-2">
                 <p class="text-xs text-gray-400 italic">
                     Gracias por sumarte a la web, dejar tu voto en los podios y hacer crecer este proyecto día a día. ¡Aguante Boca! 💙💛💙
                 </p>
