@@ -49,7 +49,7 @@
             <!-- Cards del Podio -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
 
-                <!-- 1° Puesto: FIGURA (Destacado) -->
+                <!-- 1° Puesto: FIGURA DEL PARTIDO -->
                 <div class="bg-gray-900/90 rounded-2xl border-2 border-boca-yellow p-6 text-center space-y-3 relative shadow-xl transform md:-translate-y-2">
                     <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-boca-yellow text-boca-blue text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow">
                         FIGURA DEL PARTIDO
@@ -76,7 +76,7 @@
                     </div>
 
                     <div>
-                        <h3 class="text-xl font-black text-white">Edinson Cavani</h3>
+                        <h3 class="text-xl font-black text-white">Miguel Merentiel</h3>
                         <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-0.5">DELANTERO</p>
                     </div>
 
@@ -92,7 +92,7 @@
                     </div>
 
                     <div>
-                        <h3 class="text-xl font-black text-white">Kevin Zenón</h3>
+                        <h3 class="text-xl font-black text-white">Leandro Paredes</h3>
                         <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-0.5">MEDIOCAMPISTA</p>
                     </div>
 
