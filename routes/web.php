@@ -7,7 +7,7 @@ use App\Models\Jugador;
 use App\Models\Standing;
 use Illuminate\Support\Facades\DB;
 
-// Home / Stream (Actualizado con cumpleañeros y tablas dinámicas de los Grupos A y B)
+// Home / Stream
 Route::get('/', function () {
     $proximoPartido = [
         'local' => 'São Paulo',
@@ -19,12 +19,10 @@ Route::get('/', function () {
         'arbitro' => 'Gustavo Tejera (URU)'
     ];
 
-    // Lógica automática de cumpleañeros del día
     $cumpleañeros = Jugador::whereMonth('fecha_nacimiento', now()->month)
                            ->whereDay('fecha_nacimiento', now()->day)
                            ->get();
 
-    // Tablas de posiciones por grupo actualizadas desde la base de datos
     $grupoA = Standing::where('grupo', 'A')->orderBy('puntos', 'desc')->get();
     $grupoB = Standing::where('grupo', 'B')->orderBy('puntos', 'desc')->get();
 
@@ -69,7 +67,7 @@ Route::get('/podio', function () {
     return view('podium');
 });
 
-// Guardar los 3 votos seleccionados
+// Guardar los 3 votos
 Route::post('/podio/votar', function (Request $request) {
     $votes = $request->input('votes');
     
@@ -85,7 +83,7 @@ Route::post('/podio/votar', function (Request $request) {
     return response()->json(['status' => 'success']);
 });
 
-// Página de Tablas y Posiciones (Con consulta directa al modelo Standing para evitar errores de controladores)
+// Página de Tablas y Posiciones
 Route::get('/tablas', function () {
     $grupoA = Standing::where('grupo', 'A')->orderBy('puntos', 'desc')->get();
     $grupoB = Standing::where('grupo', 'B')->orderBy('puntos', 'desc')->get();
@@ -110,13 +108,13 @@ Route::get('/admin', function () {
     return view('admin', compact('results', 'totalSubmissions'));
 });
 
-// Reiniciar la Votación Completa
+// Reiniciar la Votación
 Route::post('/admin/reset', function () {
     Vote::truncate();
     return redirect('/admin');
 });
 
-// Página Quién Soy / Sobre Mí
+// Página Quién Soy
 Route::get('/quien-soy', function () {
     return view('quienes-somos');
 });
