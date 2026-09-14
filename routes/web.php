@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Models\Vote;
+use App\Models\Jugador;
+use App\Models\Standing;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\StandingsController;
 
-// Home / Stream
+// Home / Stream (Actualizado con cumpleañeros y tablas dinámicas de los Grupos A y B)
 Route::get('/', function () {
     $proximoPartido = [
         'local' => 'São Paulo',
@@ -18,7 +19,16 @@ Route::get('/', function () {
         'arbitro' => 'Gustavo Tejera (URU)'
     ];
 
-    return view('welcome', compact('proximoPartido'));
+    // Lógica automática de cumpleañeros del día
+    $cumpleañeros = Jugador::whereMonth('fecha_nacimiento', now()->month)
+                           ->whereDay('fecha_nacimiento', now()->day)
+                           ->get();
+
+    // Tablas de posiciones por grupo actualizadas desde la base de datos
+    $grupoA = Standing::where('grupo', 'A')->orderBy('puntos', 'desc')->get();
+    $grupoB = Standing::where('grupo', 'B')->orderBy('puntos', 'desc')->get();
+
+    return view('welcome', compact('proximoPartido', 'cumpleañeros', 'grupoA', 'grupoB'));
 });
 
 // Página de Goleadores
@@ -75,8 +85,13 @@ Route::post('/podio/votar', function (Request $request) {
     return response()->json(['status' => 'success']);
 });
 
-// Página de Tablas y Posiciones (Consumiendo el Web Scraper)
-Route::get('/tablas', [StandingsController::class, 'index']);
+// Página de Tablas y Posiciones (Con consulta directa al modelo Standing para evitar errores de controladores)
+Route::get('/tablas', function () {
+    $grupoA = Standing::where('grupo', 'A')->orderBy('puntos', 'desc')->get();
+    $grupoB = Standing::where('grupo', 'B')->orderBy('puntos', 'desc')->get();
+
+    return view('tablas', compact('grupoA', 'grupoB'));
+});
 
 // Panel Admin Dinámico
 Route::get('/admin', function () {
@@ -101,7 +116,7 @@ Route::post('/admin/reset', function () {
     return redirect('/admin');
 });
 
-// Página Quién Soy / Sobre Mí (Agregada sin romper nada)
+// Página Quién Soy / Sobre Mí
 Route::get('/quien-soy', function () {
     return view('quienes-somos');
 });
