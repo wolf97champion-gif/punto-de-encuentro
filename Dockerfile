@@ -23,8 +23,10 @@ RUN sed -ri -s 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 RUN a2enmod rewrite
 
-# Dar permisos a storage y cache
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Dar permisos a storage y cache, y generar la key de Laravel
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 777 storage bootstrap/cache \
+    && php artisan key:generate --force
 
 EXPOSE 10000
 RUN sed -i 's/80/10000/g' /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
