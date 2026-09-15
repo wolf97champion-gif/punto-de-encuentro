@@ -23,8 +23,9 @@ RUN sed -ri -s 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 RUN a2enmod rewrite
 
-# Dar permisos a storage y cache, y generar la key de Laravel
-RUN chown -R www-data:www-data storage bootstrap/cache \
+# Copiar .env.example a .env, dar permisos a storage/cache y generar la key de Laravel
+RUN cp .env.example .env \
+    && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 777 storage bootstrap/cache \
     && php artisan key:generate --force
 
