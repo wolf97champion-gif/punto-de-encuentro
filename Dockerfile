@@ -12,4 +12,4 @@ RUN cp .env.example .env
 RUN php artisan key:generate
 
 EXPOSE 10000
-CMD php artisan config:clear && php -S 0.0.0.0:10000 -t public
+CMD php artisan config:clear && php -S 0.0.0.0:10000 -t public/
