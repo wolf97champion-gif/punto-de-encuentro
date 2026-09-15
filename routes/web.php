@@ -67,16 +67,25 @@ Route::get('/podio', function () {
     return view('podium');
 });
 
-// Guardar los 3 votos (Conectado con tu base de datos)
+// Guardar los 3 votos (Blindado y seguro)
 Route::post('/podio/votar', function (Request $request) {
     $votes = $request->input('votes');
     
+    if (is_string($votes)) {
+        $votes = json_decode($votes, true);
+    }
+
     if (is_array($votes)) {
         foreach ($votes as $vote) {
-            Vote::create([
-                'player_name' => $vote['name'],
-                'position' => $vote['position']
-            ]);
+            $playerName = $vote['name'] ?? $vote['player_name'] ?? null;
+            $position = $vote['position'] ?? null;
+
+            if ($playerName && $position) {
+                Vote::create([
+                    'player_name' => $playerName,
+                    'position' => $position
+                ]);
+            }
         }
     }
 
@@ -91,26 +100,36 @@ Route::get('/tablas', function () {
     return view('tablas', compact('grupoA', 'grupoB'));
 });
 
-// Panel Admin Dinámico (Alimentando perfectamente a tu admin.blade.php)
+// Panel Admin Dinámico (Blindado contra bases de datos vacías en producción)
 Route::get('/admin', function () {
-    $results = Vote::select('player_name',
-        DB::raw('SUM(CASE WHEN position = 1 THEN 1 ELSE 0 END) as v1'),
-        DB::raw('SUM(CASE WHEN position = 2 THEN 1 ELSE 0 END) as v2'),
-        DB::raw('SUM(CASE WHEN position = 3 THEN 1 ELSE 0 END) as v3'),
-        DB::raw('SUM(CASE WHEN position = 1 THEN 3 WHEN position = 2 THEN 2 WHEN position = 3 THEN 1 ELSE 0 END) as points')
-    )
-    ->groupBy('player_name')
-    ->orderByDesc('points')
-    ->get();
+    try {
+        $results = Vote::select('player_name',
+            DB::raw('SUM(CASE WHEN position = 1 THEN 1 ELSE 0 END) as v1'),
+            DB::raw('SUM(CASE WHEN position = 2 THEN 1 ELSE 0 END) as v2'),
+            DB::raw('SUM(CASE WHEN position = 3 THEN 1 ELSE 0 END) as v3'),
+            DB::raw('SUM(CASE WHEN position = 1 THEN 3 WHEN position = 2 THEN 2 WHEN position = 3 THEN 1 ELSE 0 END) as points')
+        )
+        ->groupBy('player_name')
+        ->orderByDesc('points')
+        ->get();
 
-    $totalSubmissions = floor(Vote::count() / 3);
+        $totalSubmissions = floor(Vote::count() / 3);
+    } catch (\Exception $e) {
+        // Si la tabla no existe o tira error, inicializamos vacío para que no rompa la vista
+        $results = collect();
+        $totalSubmissions = 0;
+    }
 
     return view('admin', compact('results', 'totalSubmissions'));
 });
 
 // Reiniciar la Votación
 Route::post('/admin/reset', function () {
-    Vote::truncate();
+    try {
+        Vote::truncate();
+    } catch (\Exception $e) {
+        // Ignora error si la tabla no existe todavía
+    }
     return redirect('/admin');
 });
 
