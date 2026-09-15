@@ -3,365 +3,493 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Votación del Podio - Punto de Encuentro</title>
+    <title>Podio del Partido - Punto de Encuentro</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .bg-boca-blue { background-color: #001f54; }
-        .bg-boca-yellow { background-color: #f7b32b; }
-        .text-boca-yellow { color: #f7b32b; }
-        .border-boca-yellow { border-color: #f7b32b; }
-        @keyframes popIn {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        boca: {
+                            blue: '#002366',
+                            dark: '#001333',
+                            light: '#003399',
+                            yellow: '#F3C300',
+                            gold: '#FFD700'
+                        }
+                    }
+                }
+            }
         }
-        .animate-pop { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 19, 51, 0.6);
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(243, 195, 0, 0.3);
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(243, 195, 0, 0.6);
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col">
+<body class="bg-boca-dark text-gray-100 font-sans min-h-screen flex flex-col justify-between antialiased selection:bg-boca-yellow selection:text-boca-dark">
 
-    <!-- Header / Navbar -->
-    <header class="bg-boca-blue border-b-4 border-boca-yellow shadow-lg w-full sticky top-0 z-50">
-        <div class="max-w-[1600px] mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="/" class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-boca-yellow text-boca-blue font-black flex items-center justify-center rounded-full text-xl shadow">PE</div>
+    <!-- Navbar Superior -->
+    <header class="sticky top-4 z-50 px-6 lg:px-12 max-w-[1600px] mx-auto w-full">
+        <div class="bg-boca-blue/85 backdrop-blur-md border border-blue-600/40 shadow-2xl rounded-2xl px-6 py-3.5 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 bg-boca-yellow text-boca-blue font-black flex items-center justify-center rounded-xl text-lg shadow-md group-hover:scale-105 transition duration-300">PE</div>
                 <div>
-                    <h1 class="text-2xl font-extrabold tracking-wider text-white">PUNTO DE <span class="text-boca-yellow">ENCUENTRO</span></h1>
-                    <p class="text-[10px] text-gray-300 font-medium">La web de la comunidad xeneize</p>
+                    <span class="text-base lg:text-lg font-black tracking-wider text-white">PUNTO DE <span class="text-boca-yellow">ENCUENTRO</span></span>
+                    <span class="block text-[9px] text-gray-300 tracking-wider font-semibold uppercase">La web de la comunidad xeneize</span>
                 </div>
             </a>
-            <nav class="space-x-8 hidden md:flex font-semibold text-sm uppercase tracking-wide">
-                <a href="/" class="hover:text-boca-yellow transition">Inicio / Live</a>
-                <a href="/goleadores" class="hover:text-boca-yellow transition">Goleadores</a>
-                <a href="/podio" class="text-boca-yellow font-bold border-b-2 border-boca-yellow pb-1">Podio del Partido</a>
-                <a href="/tablas" class="hover:text-boca-yellow transition">Tablas & Posiciones</a>
+            <nav class="hidden md:flex items-center space-x-2 text-xs font-bold uppercase tracking-wider">
+                <a href="/" class="text-gray-300 hover:text-white hover:bg-blue-900/60 px-4 py-2 rounded-xl transition">Inicio / Live</a>
+                <a href="/goleadores" class="text-gray-300 hover:text-white hover:bg-blue-900/60 px-4 py-2 rounded-xl transition">Goleadores</a>
+                <a href="/podio" class="bg-boca-yellow text-boca-dark px-4 py-2 rounded-xl shadow-md transition">Podio del Partido</a>
+                <a href="/tablas" class="text-gray-300 hover:text-white hover:bg-blue-900/60 px-4 py-2 rounded-xl transition">Tablas & Posiciones</a>
             </nav>
         </div>
     </header>
 
-    <main class="flex-grow max-w-[1400px] w-full mx-auto px-6 py-8">
-
-        <!-- MODO SELECCIÓN DE PODIO -->
-        <div id="selection-screen" class="space-y-8">
-            <!-- Header Interactivo -->
-            <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-lg">
-                <div>
-                    <h2 class="text-2xl font-black text-white uppercase tracking-wide">
-                        ⭐ Armá tu <span class="text-boca-yellow">Podio del Partido</span>
-                    </h2>
-                    <p class="text-xs text-gray-400 mt-1">Hacé clic en 3 jugadores del plantel actual para formar tu podio oficial.</p>
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-[1600px] w-full mx-auto px-6 lg:px-12 py-8 space-y-8">
+        
+        <!-- Banner Superior -->
+        <div class="bg-gradient-to-r from-boca-blue/60 via-blue-900/70 to-boca-blue/60 border border-blue-600/40 rounded-3xl p-6 lg:p-8 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-boca-yellow/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="space-y-1 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-2">
+                    <span class="text-xl">⭐</span>
+                    <h1 class="text-xl lg:text-2xl font-black text-white tracking-tight uppercase">ARMÁ TU PODIO DEL PARTIDO</h1>
                 </div>
-                <button id="reset-btn" onclick="resetPodium()" class="hidden bg-red-600/80 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition">
-                    🔄 Reiniciar
-                </button>
+                <p class="text-xs text-gray-300">Hacé clic en 3 jugadores del plantel actual para armar tu podio oficial de la fecha.</p>
             </div>
+            <div class="bg-boca-dark/80 border border-blue-800/80 px-4 py-2 rounded-2xl text-xs font-mono text-boca-yellow tracking-wider shadow-inner">
+                FECHA 9 • TORNEO 2026
+            </div>
+        </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Grilla Principal -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Columna Izquierda: Plantel Completo por Secciones -->
+            <div class="lg:col-span-7 bg-boca-blue border border-blue-700/50 rounded-3xl shadow-2xl p-6 flex flex-col h-[680px]">
+                
+                <div class="flex items-center justify-between pb-4 mb-4 border-b border-blue-800/60">
+                    <span class="text-xs font-black tracking-widest text-boca-yellow uppercase flex items-center gap-2">
+                        📋 PLANTEL PROFESIONAL
+                    </span>
+                    <span class="text-[11px] font-mono text-gray-400 bg-boca-dark/60 px-3 py-1 rounded-xl border border-blue-900">
+                        DT: <strong class="text-white">Rodolfo Arruabarrena</strong>
+                    </span>
+                </div>
 
-                <!-- Lista de Jugadores (Plantel Actual) -->
-                <section class="lg:col-span-7 bg-gray-800/80 p-6 rounded-2xl border border-gray-700 shadow-xl space-y-4">
-                    <h3 class="text-sm font-black text-boca-yellow uppercase tracking-widest border-b border-gray-700 pb-3 flex justify-between items-center">
-                        <span>📋 Plantel Profesional</span>
-                        <span class="text-[11px] text-gray-400">DT: Rodolfo Arruabarrena</span>
-                    </h3>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[550px] overflow-y-auto pr-2" id="players-list">
-                        <!-- Carga dinámica vía JS -->
-                    </div>
-                </section>
-
-                <!-- Panel Lateral / Selección -->
-                <section class="lg:col-span-5 bg-gradient-to-b from-gray-800 to-gray-900 p-6 rounded-2xl border-2 border-boca-yellow/50 shadow-2xl flex flex-col justify-between space-y-6">
+                <!-- Lista con Scroll Personalizado -->
+                <div class="overflow-y-auto pr-2 space-y-4 custom-scrollbar flex-grow">
+                    
+                    <!-- ARQUEROS -->
                     <div>
-                        <h3 class="text-sm font-black text-white uppercase tracking-widest border-b border-gray-700 pb-3 flex justify-between items-center">
-                            <span>🏆 Selección Actual</span>
-                            <span id="counter-badge" class="bg-boca-yellow text-boca-blue text-[10px] font-black px-2.5 py-0.5 rounded-full">0/3</span>
-                        </h3>
-
-                        <div class="space-y-3 mt-4">
-                            <!-- 1° Puesto -->
-                            <div id="slot-1" class="bg-gray-900/90 border border-boca-yellow/40 rounded-xl p-4 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="text-2xl">🥇</span>
+                        <div class="text-[10px] font-black text-boca-yellow tracking-widest uppercase mb-2 px-1">Arqueros</div>
+                        <div class="space-y-2">
+                            <button onclick="seleccionarJugador(1, 'Agustín Marchesín', 'ARQUERO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#1</span>
                                     <div>
-                                        <div class="text-[10px] text-boca-yellow font-black uppercase">1° Puesto — Figura</div>
-                                        <div class="text-sm font-black text-white placeholder-text">Elegí el 1° lugar...</div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Agustín Marchesín</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Arquero</span>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- 2° Puesto -->
-                            <div id="slot-2" class="bg-gray-900/90 border border-gray-700 rounded-xl p-4 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="text-2xl">🥈</span>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(1, 'Alvaro Montero', 'ARQUERO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#1</span>
                                     <div>
-                                        <div class="text-[10px] text-blue-400 font-black uppercase">2° Puesto</div>
-                                        <div class="text-sm font-black text-white placeholder-text">Elegí el 2° lugar...</div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Alvaro Montero</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Arquero</span>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- 3° Puesto -->
-                            <div id="slot-3" class="bg-gray-900/90 border border-gray-700 rounded-xl p-4 flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="text-2xl">🥉</span>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(12, 'Leandro Brey', 'ARQUERO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#12</span>
                                     <div>
-                                        <div class="text-[10px] text-orange-400 font-black uppercase">3° Puesto</div>
-                                        <div class="text-sm font-black text-white placeholder-text">Elegí el 3° lugar...</div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Leandro Brey</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Arquero</span>
                                     </div>
                                 </div>
-                            </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(30, 'Javier García', 'ARQUERO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#30</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Javier García</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Arquero</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
                         </div>
                     </div>
 
+                    <!-- DEFENSORES -->
                     <div>
-                        <button id="submit-btn" disabled onclick="confirmPodium()" class="w-full bg-gray-700 text-gray-400 cursor-not-allowed font-black py-3.5 px-4 rounded-xl text-xs uppercase tracking-wide transition shadow">
-                            Elegí 3 jugadores para confirmar
-                        </button>
+                        <div class="text-[10px] font-black text-boca-yellow tracking-widest uppercase mb-2 px-1">Defensores</div>
+                        <div class="space-y-2">
+                            <button onclick="seleccionarJugador(2, 'Lautaro Di Lollo', 'DEFENSA CENTRAL')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#2</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Lautaro Di Lollo</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Defensa Central</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(3, 'Lautaro Blanco', 'LATERAL IZQUIERDO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#3</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Lautaro Blanco</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Lateral Izquierdo</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(4, 'Nicolás Figal', 'DEFENSA CENTRAL')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#4</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Nicolás Figal</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Defensa Central</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(17, 'Leandro Lozano', 'LATERAL DERECHO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#17</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Leandro Lozano</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Lateral Derecho</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(24, 'Dylan Gorosito', 'LATERAL DERECHO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#24</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Dylan Gorosito</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Lateral Derecho</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(26, 'Marco Pellegrino', 'DEFENSA CENTRAL')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#26</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Marco Pellegrino</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Defensa Central</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(27, 'Malcom Braida', 'LATERAL IZQUIERDO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#27</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Malcom Braida</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Lateral Izquierdo</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(32, 'Ayrton Costa', 'DEFENSA CENTRAL')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#32</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Ayrton Costa</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Defensa Central</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(42, 'Facundo Herrera', 'DEFENSA CENTRAL')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#42</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Facundo Herrera</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Defensa Central</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                        </div>
                     </div>
-                </section>
 
+                    <!-- MEDIOCAMPISTAS -->
+                    <div>
+                        <div class="text-[10px] font-black text-boca-yellow tracking-widest uppercase mb-2 px-1">Mediocampistas</div>
+                        <div class="space-y-2">
+                            <button onclick="seleccionarJugador(0, 'Juan Ramírez', 'MEDIOCAMPISTA CENTRAL')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#--</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Juan Ramírez</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Mediocampista Central</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(5, 'Leandro Paredes', 'CENTROCAMPISTA DEFENSIVO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#5</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Leandro Paredes</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Centrocampista Defensivo</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(6, 'Rodrigo Battaglia', 'CENTROCAMPISTA DEFENSIVO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#6</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Rodrigo Battaglia</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Centrocampista Defensivo</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(7, 'Carlos Palacios', 'MEDIOCAMPISTA OFENSIVO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#7</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Carlos Palacios</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Mediocampista Ofensivo</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(10, 'Tomás Aranda', 'MEDIOCAMPISTA OFENSIVO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#10</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Tomás Aranda</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Mediocampista Ofensivo</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(15, 'Williams Alarcón', 'MEDIOCAMPISTA CENTRAL')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#15</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Williams Alarcón</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Mediocampista Central</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(18, 'Milton Delgado', 'CENTROCAMPISTA DEFENSIVO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#18</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Milton Delgado</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Centrocampista Defensivo</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- DELANTEROS -->
+                    <div>
+                        <div class="text-[10px] font-black text-boca-yellow tracking-widest uppercase mb-2 px-1">Delanteros</div>
+                        <div class="space-y-2">
+                            <button onclick="seleccionarJugador(9, 'Edinson Cavani', 'DELANTERO CENTRO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#9</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Edinson Cavani</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Delantero Centro</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(16, 'Miguel Merentiel', 'DELANTERO CENTRO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#16</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Miguel Merentiel</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Delantero Centro</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                            <button onclick="seleccionarJugador(41, 'Exequiel Zeballos', 'EXTREMO')" class="w-full text-left bg-blue-950/40 hover:bg-blue-900/60 border border-blue-800/50 hover:border-boca-yellow/60 p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between group cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-xl bg-boca-yellow/10 text-boca-yellow font-black text-xs flex items-center justify-center border border-boca-yellow/20 group-hover:bg-boca-yellow group-hover:text-boca-dark transition">#41</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white group-hover:text-boca-yellow transition">Exequiel Zeballos</h4>
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Extremo</span>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-boca-yellow uppercase tracking-widest bg-boca-dark/40 px-2.5 py-1 rounded-lg">Seleccionar +</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
+            <!-- Columna Derecha: Tu Podio Seleccionado -->
+            <div class="lg:col-span-5 bg-boca-blue border border-blue-700/50 rounded-3xl shadow-2xl p-6 flex flex-col justify-between h-[680px]">
+                <div>
+                    <div class="flex items-center justify-between pb-4 mb-6 border-b border-blue-800/60">
+                        <span class="text-xs font-black tracking-widest text-boca-yellow uppercase flex items-center gap-2">
+                            🏆 TU PODIO ELEGIDO
+                        </span>
+                        <span id="contador-podio" class="text-[11px] font-mono text-gray-400 bg-boca-dark/60 px-3 py-1 rounded-xl border border-blue-900">
+                            0 / 3 Seleccionados
+                        </span>
+                    </div>
+
+                    <!-- Espacios del Podio -->
+                    <div id="slots-podio" class="space-y-4">
+                        <!-- Slot 1 (Oro) -->
+                        <div class="bg-boca-dark/60 border border-blue-800/70 rounded-2xl p-4 flex items-center justify-between relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-yellow-400"></div>
+                            <div class="flex items-center space-x-3 pl-2">
+                                <div class="w-10 h-10 rounded-xl bg-yellow-400/10 text-yellow-400 font-black text-sm flex items-center justify-center border border-yellow-400/20">1°</div>
+                                <div>
+                                    <h4 id="podio-1-nombre" class="text-xs font-bold text-gray-400 italic">Seleccioná el 1° puesto</h4>
+                                    <span id="podio-1-pos" class="text-[10px] text-gray-500 uppercase tracking-wider">Mejor jugador del partido</span>
+                                </div>
+                            </div>
+                            <span class="text-lg">🥇</span>
+                        </div>
+
+                        <!-- Slot 2 (Plata) -->
+                        <div class="bg-boca-dark/60 border border-blue-800/70 rounded-2xl p-4 flex items-center justify-between relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-gray-300"></div>
+                            <div class="flex items-center space-x-3 pl-2">
+                                <div class="w-10 h-10 rounded-xl bg-gray-300/10 text-gray-300 font-black text-sm flex items-center justify-center border border-gray-300/20">2°</div>
+                                <div>
+                                    <h4 id="podio-2-nombre" class="text-xs font-bold text-gray-400 italic">Seleccioná el 2° puesto</h4>
+                                    <span id="podio-2-pos" class="text-[10px] text-gray-500 uppercase tracking-wider">Segundo destacado</span>
+                                </div>
+                            </div>
+                            <span class="text-lg">🥈</span>
+                        </div>
+
+                        <!-- Slot 3 (Bronce) -->
+                        <div class="bg-boca-dark/60 border border-blue-800/70 rounded-2xl p-4 flex items-center justify-between relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-amber-600"></div>
+                            <div class="flex items-center space-x-3 pl-2">
+                                <div class="w-10 h-10 rounded-xl bg-amber-600/10 text-amber-600 font-black text-sm flex items-center justify-center border border-amber-600/20">3°</div>
+                                <div>
+                                    <h4 id="podio-3-nombre" class="text-xs font-bold text-gray-400 italic">Seleccioná el 3° puesto</h4>
+                                    <span id="podio-3-pos" class="text-[10px] text-gray-500 uppercase tracking-wider">Tercer destacado</span>
+                                </div>
+                            </div>
+                            <span class="text-lg">🥉</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="space-y-3 pt-4 border-t border-blue-800/60">
+                    <button id="btn-enviar" onclick="enviarPodio()" disabled class="w-full bg-gray-700 text-gray-400 font-bold py-3.5 rounded-2xl text-xs uppercase tracking-wider cursor-not-allowed transition shadow-md">
+                        Enviar mi Podio Oficial
+                    </button>
+                    <button onclick="reiniciarPodio()" class="w-full bg-blue-950/60 hover:bg-blue-900/80 text-gray-300 hover:text-white border border-blue-800/50 font-bold py-2.5 rounded-2xl text-[11px] uppercase tracking-wider transition">
+                        Reiniciar Selección
+                    </button>
+                </div>
+            </div>
+
         </div>
-
-
-        <!-- DASHBOARD MODO FESTEJO (Oculto al inicio) -->
-        <div id="celebration-dashboard" class="hidden space-y-8 animate-pop">
-            
-            <!-- Banner Festejo -->
-            <div class="bg-gradient-to-r from-boca-blue via-blue-900 to-boca-blue p-8 rounded-3xl border-2 border-boca-yellow shadow-2xl text-center space-y-3 relative overflow-hidden">
-                <span class="bg-boca-yellow text-boca-blue text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest inline-block shadow">
-                    🎉 Voto Confirmado Exitosamente
-                </span>
-                <h2 class="text-3xl md:text-4xl font-black text-white uppercase tracking-wider">
-                    ¡ESTE ES TU <span class="text-boca-yellow">PODIO DE LA FECHA</span>!
-                </h2>
-                <p class="text-sm text-gray-300 max-w-xl mx-auto">
-                    Tu votación ya se sumó al conteo general de la comunidad de Punto de Encuentro.
-                </p>
-            </div>
-
-            <!-- Podio Festejo Estilo Tarjetas -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                
-                <!-- 1° Puesto (Destacado) -->
-                <div class="bg-gray-800/90 rounded-2xl border-2 border-boca-yellow p-6 text-center space-y-3 relative shadow-2xl transform md:-translate-y-2">
-                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-boca-yellow text-boca-blue text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider shadow">
-                        FIGURA DEL PARTIDO
-                    </span>
-                    <div class="w-12 h-12 bg-boca-yellow/20 text-boca-yellow border-2 border-boca-yellow rounded-full flex items-center justify-center font-black mx-auto text-xl mt-2">
-                        🥇
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-black text-white" id="fest-name-1">-</h3>
-                        <p class="text-xs text-boca-yellow font-bold uppercase tracking-widest mt-0.5" id="fest-pos-1">-</p>
-                    </div>
-                </div>
-
-                <!-- 2° Puesto -->
-                <div class="bg-gray-800/80 rounded-2xl border border-blue-400/50 p-6 text-center space-y-3 shadow-xl">
-                    <div class="w-12 h-12 bg-blue-500/20 text-blue-400 border-2 border-blue-400 rounded-full flex items-center justify-center font-black mx-auto text-xl">
-                        🥈
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-black text-white" id="fest-name-2">-</h3>
-                        <p class="text-xs text-blue-400 font-bold uppercase tracking-widest mt-0.5" id="fest-pos-2">-</p>
-                    </div>
-                </div>
-
-                <!-- 3° Puesto -->
-                <div class="bg-gray-800/80 rounded-2xl border border-orange-400/50 p-6 text-center space-y-3 shadow-xl">
-                    <div class="w-12 h-12 bg-orange-500/20 text-orange-400 border-2 border-orange-400 rounded-full flex items-center justify-center font-black mx-auto text-xl">
-                        🥉
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-black text-white" id="fest-name-3">-</h3>
-                        <p class="text-xs text-orange-400 font-bold uppercase tracking-widest mt-0.5" id="fest-pos-3">-</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Botones Festejo -->
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
-                <button onclick="resetPodium()" class="w-full sm:w-auto bg-boca-yellow hover:bg-yellow-400 text-boca-blue font-black py-3.5 px-8 rounded-xl text-xs uppercase tracking-wide transition shadow-lg">
-                    ✏️ Modificar o Volver a Votar
-                </button>
-                <a href="/" class="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 text-white font-bold py-3.5 px-8 rounded-xl text-xs uppercase tracking-wide border border-gray-700 transition text-center">
-                    🏠 Volver al Inicio / Live
-                </a>
-            </div>
-
-        </div>
-
     </main>
 
-    <footer class="bg-gray-950 text-gray-500 text-center py-6 text-xs border-t border-gray-800 w-full">
-        <p>© 2026 Punto de Encuentro — Sitio web de la comunidad del canal de YouTube y TikTok.</p>
+    <!-- Footer -->
+    <footer class="max-w-[1600px] w-full mx-auto px-6 lg:px-12 py-6 text-center text-xs text-gray-500 border-t border-blue-900/40">
+        Punto de Encuentro &bull; La comunidad xeneize &copy; 2026
     </footer>
 
-    <!-- Lógica JavaScript del Plantel -->
+    <!-- Script de Interactividad del Podio -->
     <script>
-        const squad = [
-            // ARQUEROS
-            { id: 1, name: 'Agustín Marchesín', pos: 'Arquero', cat: 'ARQ' },
-            { id: 1, name: 'Alvaro Montero', pos: 'Arquero', cat: 'ARQ' },
-            { id: 12, name: 'Leandro Brey', pos: 'Arquero', cat: 'ARQ' },
-            { id: 30, name: 'Javier García', pos: 'Arquero', cat: 'ARQ' },
+        let podioSeleccionado = [];
 
-            // DEFENSAS
-            { id: 2, name: 'Lautaro Di Lollo', pos: 'Defensa Central', cat: 'DEF' },
-            { id: 3, name: 'Lautaro Blanco', pos: 'Lateral Izquierdo', cat: 'DEF' },
-            { id: 4, name: 'Nicolás Figal', pos: 'Defensa Central', cat: 'DEF' },
-            { id: 17, name: 'Leandro Lozano', pos: 'Lateral Derecho', cat: 'DEF' },
-            { id: 24, name: 'Dylan Gorosito', pos: 'Lateral Derecho', cat: 'DEF' },
-            { id: 26, name: 'Marco Pellegrino', pos: 'Defensa Central', cat: 'DEF' },
-            { id: 27, name: 'Malcom Braida', pos: 'Lateral Izquierdo', cat: 'DEF' },
-            { id: 32, name: 'Ayrton Costa', pos: 'Defensa Central', cat: 'DEF' },
-            { id: 42, name: 'Facundo Herrera', pos: 'Defensa Central', cat: 'DEF' },
-
-            // MEDIOCAMPISTAS
-            { id: 0, name: 'Juan Ramírez', pos: 'Mediocampista Central', cat: 'MED' },
-            { id: 5, name: 'Leandro Paredes', pos: 'Centrocampista Defensivo', cat: 'MED' },
-            { id: 6, name: 'Rodrigo Battaglia', pos: 'Centrocampista Defensivo', cat: 'MED' },
-            { id: 7, name: 'Carlos Palacios', pos: 'Mediocampista Ofensivo', cat: 'MED' },
-            { id: 10, name: 'Tomás Aranda', pos: 'Mediocampista Ofensivo', cat: 'MED' },
-            { id: 15, name: 'Williams Alarcón', pos: 'Mediocampista Central', cat: 'MED' },
-            { id: 18, name: 'Milton Delgado', pos: 'Centrocampista Defensivo', cat: 'MED' },
-            { id: 23, name: 'Camilo Rey Domenech', pos: 'Centrocampista Defensivo', cat: 'MED' },
-            { id: 25, name: 'Santiago Ascacibar', pos: 'Centrocampista Defensivo', cat: 'MED' },
-            { id: 30, name: 'Tomás Belmonte', pos: 'Centrocampista Defensivo', cat: 'MED' },
-
-            // DELANTEROS
-            { id: 9, name: 'Milton Giménez', pos: 'Centro Delantero', cat: 'DEL' },
-            { id: 11, name: 'Ángel Romero', pos: 'Delantero Derecho', cat: 'DEL' },
-            { id: 13, name: 'Enner Valencia', pos: 'Centro Delantero', cat: 'DEL' },
-            { id: 16, name: 'Miguel Merentiel', pos: 'Centro Delantero', cat: 'DEL' },
-            { id: 19, name: 'Leonel Flores', pos: 'Delantero Derecho', cat: 'DEL' },
-            { id: 20, name: 'Alan Velasco', pos: 'Delantero Izquierdo', cat: 'DEL' },
-            { id: 22, name: 'Sebastián Villa', pos: 'Delantero Izquierdo', cat: 'DEL' },
-            { id: 28, name: 'Adam Bareiro', pos: 'Centro Delantero', cat: 'DEL' }
-        ];
-
-        let selected = [];
-
-        function renderPlayers() {
-            const container = document.getElementById('players-list');
-            container.innerHTML = '';
-
-            squad.forEach((player, idx) => {
-                const isSelected = selected.some(p => p.uniqueId === idx);
-                const btn = document.createElement('button');
-                btn.disabled = selected.length >= 3 && !isSelected;
-                
-                btn.className = `p-3 rounded-xl border text-left flex justify-between items-center transition ${
-                    isSelected 
-                        ? 'bg-boca-yellow text-boca-blue border-boca-yellow font-black shadow-lg' 
-                        : 'bg-gray-900/90 text-gray-200 border-gray-700 hover:border-boca-yellow/60 hover:bg-gray-800'
-                } ${btn.disabled && !isSelected ? 'opacity-30 cursor-not-allowed' : ''}`;
-
-                btn.onclick = () => togglePlayer(player, idx);
-                btn.innerHTML = `
-                    <div>
-                        <div class="text-xs font-bold">${player.id ? '#' + player.id + ' ' : ''}${player.name}</div>
-                        <div class="text-[9px] opacity-75 uppercase font-semibold">${player.pos}</div>
-                    </div>
-                    ${isSelected ? '<span class="text-xs bg-boca-blue text-boca-yellow px-1.5 py-0.5 rounded font-black">✓</span>' : ''}
-                `;
-                container.appendChild(btn);
-            });
-        }
-
-        function togglePlayer(player, uniqueId) {
-            const index = selected.findIndex(p => p.uniqueId === uniqueId);
-            if (index > -1) {
-                selected.splice(index, 1);
-            } else if (selected.length < 3) {
-                selected.push({ ...player, uniqueId });
+        function seleccionarJugador(dorsal, nombre, posicion) {
+            // Evitar duplicados
+            if (podioSeleccionado.some(j => j.nombre === nombre)) {
+                alert("Ya seleccionaste a este jugador.");
+                return;
             }
-            updateDashboard();
-            renderPlayers();
+
+            if (podioSeleccionado.length >= 3) {
+                alert("Ya completaste los 3 puestos del podio. Podés reiniciar si querés cambiarlo.");
+                return;
+            }
+
+            podioSeleccionado.push({ dorsal, nombre, posicion });
+            actualizarVistaPodio();
         }
 
-        function updateDashboard() {
-            document.getElementById('counter-badge').innerText = `${selected.length}/3`;
-            document.getElementById('reset-btn').classList.toggle('hidden', selected.length === 0);
+        function actualizarVistaPodio() {
+            for (let i = 0; i < 3; i++) {
+                const nombreEl = document.getElementById(`podio-${i + 1}-nombre`);
+                const posEl = document.getElementById(`podio-${i + 1}-pos`);
 
-            for (let i = 1; i <= 3; i++) {
-                const slot = document.getElementById(`slot-${i}`);
-                const player = selected[i - 1];
-                const textElem = slot.querySelector('.placeholder-text');
-
-                if (player) {
-                    textElem.innerText = `${player.name} (${player.cat})`;
-                    textElem.classList.remove('text-gray-500', 'italic');
-                    slot.classList.add('border-boca-yellow');
+                if (podioSeleccionado[i]) {
+                    nombreEl.textContent = `#${podioSeleccionado[i].dorsal} - ${podioSeleccionado[i].nombre}`;
+                    nombreEl.className = "text-xs font-bold text-white";
+                    posEl.textContent = podioSeleccionado[i].posicion;
                 } else {
-                    textElem.innerText = `Elegí el ${i}° lugar...`;
-                    textElem.classList.add('text-gray-500', 'italic');
-                    slot.classList.remove('border-boca-yellow');
+                    nombreEl.textContent = `Seleccioná el ${i + 1}° puesto`;
+                    nombreEl.className = "text-xs font-bold text-gray-400 italic";
+                    posEl.textContent = i === 0 ? "Mejor jugador del partido" : (i === 1 ? "Segundo destacado" : "Tercer destacado");
                 }
             }
 
-            const submitBtn = document.getElementById('submit-btn');
-            if (selected.length === 3) {
-                submitBtn.disabled = false;
-                submitBtn.className = 'w-full bg-boca-yellow hover:bg-yellow-400 text-boca-blue cursor-pointer font-black py-3.5 px-4 rounded-xl text-xs uppercase tracking-wide transition shadow-lg transform hover:scale-102';
-                submitBtn.innerText = '✨ CONFIRMAR MI PODIO';
+            const contador = document.getElementById('contador-podio');
+            contador.textContent = `${podioSeleccionado.length} / 3 Seleccionados`;
+
+            const btnEnviar = document.getElementById('btn-enviar');
+            if (podioSeleccionado.length === 3) {
+                btnEnviar.disabled = false;
+                btnEnviar.className = "w-full bg-boca-yellow hover:bg-yellow-400 text-boca-dark font-black py-3.5 rounded-2xl text-xs uppercase tracking-wider cursor-pointer transition shadow-lg shadow-yellow-500/10";
             } else {
-                submitBtn.disabled = true;
-                submitBtn.className = 'w-full bg-gray-700 text-gray-400 cursor-not-allowed font-black py-3.5 px-4 rounded-xl text-xs uppercase tracking-wide transition shadow';
-                submitBtn.innerText = `Selecciona ${3 - selected.length} jugador(es) más`;
+                btnEnviar.disabled = true;
+                btnEnviar.className = "w-full bg-gray-700 text-gray-400 font-bold py-3.5 rounded-2xl text-xs uppercase tracking-wider cursor-not-allowed transition shadow-md";
             }
         }
 
-        function confirmPodium() {
-            if (selected.length !== 3) return;
-
-            // Enviar selección al backend
-            fetch('/podio/votar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    votes: [
-                        { name: selected[0].name, position: 1 },
-                        { name: selected[1].name, position: 2 },
-                        { name: selected[2].name, position: 3 }
-                    ]
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Voto guardado:', data);
-            })
-            .catch(error => {
-                console.error('Error al registrar el voto:', error);
-            });
-
-            // Cargar datos en el Dashboard Festejo
-            for (let i = 1; i <= 3; i++) {
-                document.getElementById(`fest-name-${i}`).innerText = selected[i-1].name;
-                document.getElementById(`fest-pos-${i}`).innerText = selected[i-1].pos;
-            }
-
-            // Ocultar selección y mostrar Dashboard Festejo
-            document.getElementById('selection-screen').classList.add('hidden');
-            document.getElementById('celebration-dashboard').classList.remove('hidden');
+        function reiniciarPodio() {
+            podioSeleccionado = [];
+            actualizarVistaPodio();
         }
 
-        function resetPodium() {
-            selected = [];
-            document.getElementById('celebration-dashboard').classList.add('hidden');
-            document.getElementById('selection-screen').classList.remove('hidden');
-            updateDashboard();
-            renderPlayers();
+        function enviarPodio() {
+            alert("¡Podio enviado con éxito! Gracias por participar en Punto de Encuentro.");
+            reiniciarPodio();
         }
-
-        // Carga inicial
-        renderPlayers();
     </script>
 </body>
 </html>

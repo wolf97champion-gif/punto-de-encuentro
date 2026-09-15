@@ -3,156 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablas y Posiciones - Punto de Encuentro</title>
+    <title>Tablas de Posiciones - Punto de Encuentro</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .bg-boca-blue { background-color: #001f54; }
-        .bg-boca-yellow { background-color: #f7b32b; }
-        .text-boca-yellow { color: #f7b32b; }
-    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        boca: {
+                            blue: '#002366',
+                            dark: '#001333',
+                            light: '#003399',
+                            yellow: '#F3C300',
+                            gold: '#FFD700'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col">
+<body class="bg-boca-dark text-gray-100 font-sans min-h-screen flex flex-col justify-between antialiased selection:bg-boca-yellow selection:text-boca-dark">
 
-    <!-- Header / Navbar -->
-    <header class="bg-boca-blue border-b-4 border-boca-yellow shadow-lg w-full sticky top-0 z-50">
-        <div class="max-w-[1600px] mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-boca-yellow text-boca-blue font-black flex items-center justify-center rounded-full text-xl shadow">PE</div>
+    <!-- Navbar Superior Moderno y Flotante -->
+    <header class="sticky top-4 z-50 px-6 lg:px-12 max-w-[1600px] mx-auto w-full">
+        <div class="bg-boca-blue/85 backdrop-blur-md border border-blue-600/40 shadow-2xl rounded-2xl px-6 py-3.5 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 bg-boca-yellow text-boca-blue font-black flex items-center justify-center rounded-xl text-lg shadow-md group-hover:scale-105 transition duration-300">PE</div>
                 <div>
-                    <h1 class="text-2xl font-extrabold tracking-wider text-white">PUNTO DE <span class="text-boca-yellow">ENCUENTRO</span></h1>
-                    <p class="text-[10px] text-gray-300 font-medium">La web de la comunidad xeneize</p>
+                    <span class="text-base lg:text-lg font-black tracking-wider text-white">PUNTO DE <span class="text-boca-yellow">ENCUENTRO</span></span>
+                    <span class="block text-[9px] text-gray-300 tracking-wider font-semibold uppercase">Comunidad Xeneize</span>
                 </div>
             </a>
-            <nav class="space-x-8 hidden md:flex font-semibold text-sm uppercase tracking-wide">
-                <a href="{{ url('/') }}" class="hover:text-boca-yellow transition">Inicio / Live</a>
-                <a href="{{ url('/goleadores') }}" class="hover:text-boca-yellow transition">Goleadores</a>
-                <a href="{{ url('/podio') }}" class="hover:text-boca-yellow transition">Podio del Partido</a>
-                <a href="{{ url('/tablas') }}" class="text-boca-yellow font-bold border-b-2 border-boca-yellow pb-1">Tablas & Posiciones</a>
-                <a href="{{ url('/quien-soy') }}" class="hover:text-boca-yellow transition">Quién Soy</a>
+            <nav class="hidden md:flex items-center space-x-2 text-xs font-bold uppercase tracking-wider">
+                <a href="/" class="text-gray-300 hover:text-white hover:bg-blue-900/60 px-4 py-2 rounded-xl transition">Inicio / Live</a>
+                <a href="/goleadores" class="text-gray-300 hover:text-white hover:bg-blue-900/60 px-4 py-2 rounded-xl transition">Goleadores</a>
+                <a href="/podio" class="text-gray-300 hover:text-white hover:bg-blue-900/60 px-4 py-2 rounded-xl transition">Podio</a>
+                <a href="/tablas" class="bg-boca-yellow text-boca-dark px-4 py-2 rounded-xl shadow-md transition">Tablas & Posiciones</a>
+                <a href="/quien-soy" class="text-gray-300 hover:text-white hover:bg-blue-900/60 px-4 py-2 rounded-xl transition">Quién Soy</a>
             </nav>
         </div>
     </header>
 
     <!-- Contenido Principal -->
-    <main class="flex-grow max-w-[1550px] w-full mx-auto px-6 py-8">
+    <main class="flex-grow max-w-[1600px] w-full mx-auto px-6 lg:px-12 py-8 space-y-10">
         
-        <div class="text-center mb-8">
-            <h2 class="text-2xl md:text-3xl font-black text-white uppercase tracking-wider bg-emerald-900/60 py-2.5 px-6 rounded-xl border border-emerald-700 inline-block shadow-lg">
-                🏆 TABLAS DE POSICIONES OFICIALES
-            </h2>
-            <p class="text-xs text-gray-400 mt-2 font-medium">Datos actualizados directamente desde la base de datos del torneo.</p>
+        <!-- Encabezado de Sección Estilo TV -->
+        <div class="text-center bg-gradient-to-r from-boca-blue/40 via-blue-900/50 to-boca-blue/40 border border-blue-700/40 p-8 rounded-3xl shadow-xl relative overflow-hidden">
+            <div class="absolute inset-0 bg-boca-yellow/5 blur-2xl pointer-events-none"></div>
+            <span class="bg-boca-yellow text-boca-dark text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-md">
+                🏆 TORNEO 2026
+            </span>
+            <h1 class="text-2xl lg:text-3xl font-black text-white mt-3 tracking-tight">TABLAS DE POSICIONES OFICIALES</h1>
+            <p class="text-xs text-gray-300 mt-2">Seguimiento en tiempo real de Zonas, Tabla Anual y Promedios del fútbol argentino.</p>
         </div>
 
-        <!-- Grilla de 2 columnas para Grupo A y Grupo B -->
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <!-- 1. GRUPOS A y B (Zonas) -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
-            <!-- GRUPO A -->
-            <div class="bg-gray-950 rounded-xl shadow-2xl border border-emerald-800/60 overflow-hidden flex flex-col">
-                <div class="bg-emerald-900/80 px-5 py-3.5 border-b border-emerald-800 flex items-center justify-between">
-                    <h3 class="text-lg font-black text-white uppercase tracking-wider">📁 GRUPO A</h3>
+            <!-- Grupo A -->
+            <div class="bg-boca-blue border border-blue-700/50 rounded-3xl shadow-2xl p-6 lg:p-8">
+                <div class="flex items-center justify-between mb-6 border-b border-blue-800/60 pb-4">
+                    <span class="text-xs font-black tracking-widest text-boca-yellow uppercase flex items-center gap-2">📁 GRUPO A</span>
+                    <span class="text-[10px] bg-boca-dark text-cyan-400 px-3 py-1 rounded-lg border border-cyan-500/30 font-mono">Fase de Zonas</span>
                 </div>
-                
-                <div class="overflow-x-auto flex-grow">
-                    <table class="w-full text-left text-sm text-gray-300">
-                        <thead class="bg-gray-900 text-gray-400 uppercase text-xs border-b border-gray-800">
-                            <tr>
-                                <th class="py-2.5 px-3 w-10 text-center">#</th>
-                                <th class="py-2.5 px-3">Equipos</th>
-                                <th class="py-2.5 px-2 text-center font-bold text-white">PTS</th>
-                                <th class="py-2.5 px-2 text-center">J</th>
-                                <th class="py-2.5 px-2 text-center">GOL</th>
-                                <th class="py-2.5 px-2 text-center">+/-</th>
-                                <th class="py-2.5 px-3 text-center">ÚLTIMAS</th>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="text-gray-400 border-b border-blue-800/60 font-mono text-[11px]">
+                                <th class="pb-3 px-2">#</th>
+                                <th class="pb-3 px-2">EQUIPOS</th>
+                                <th class="pb-3 px-2 text-center">PTS</th>
+                                <th class="pb-3 px-2 text-center">J</th>
+                                <th class="pb-3 px-2 text-center">GOL</th>
+                                <th class="pb-3 px-2 text-center">+/-</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-900">
-                            @foreach($grupoA as $index => $row)
-                                <tr class="{{ $row->equipo == 'Boca Jrs.' ? 'bg-blue-900/50 font-bold text-white' : 'hover:bg-gray-900/40' }}">
-                                    <td class="py-2.5 px-3 text-center font-semibold text-gray-400">#{{ $index + 1 }}</td>
-                                    <td class="py-2.5 px-3 flex items-center gap-2">
-                                        <span>{{ $row->equipo }}</span> @if($row->equipo == 'Boca Jrs.') ⭐ @endif
-                                    </td>
-                                    <td class="py-2.5 px-2 text-center text-white font-black bg-gray-900/50">{{ $row->puntos }}</td>
-                                    <td class="py-2.5 px-2 text-center text-gray-400">{{ $row->jugados }}</td>
-                                    <td class="py-2.5 px-2 text-center text-gray-400">{{ $row->goles_a_favor }}:{{ $row->goles_en_contra }}</td>
-                                    <td class="py-2.5 px-2 text-center text-gray-400">{{ ($row->goles_a_favor - $row->goles_en_contra) > 0 ? '+'.($row->goles_a_favor - $row->goles_en_contra) : ($row->goles_a_favor - $row->goles_en_contra) }}</td>
-                                    <td class="py-2.5 px-3 text-center">
-                                        <div class="flex justify-center gap-1">
-                                            @foreach(explode(',', $row->ultimas) as $letra)
-                                                <span class="w-5 h-5 text-[10px] font-black rounded flex items-center justify-center 
-                                                    {{ trim($letra) == 'V' ? 'bg-emerald-600 text-white' : (trim($letra) == 'E' ? 'bg-amber-500 text-black' : 'bg-red-600 text-white') }}">
-                                                    {{ trim($letra) }}
-                                                </span>
-                                            @endforeach
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                        <tbody class="divide-y divide-blue-900/40 font-medium">
+                            <tr class="bg-blue-900/80 text-boca-yellow font-bold border-l-4 border-boca-yellow">
+                                <td class="py-3 px-2">#5</td>
+                                <td class="py-3 px-2 flex items-center gap-1.5">Boca Jrs. <span class="text-sm">⭐</span></td>
+                                <td class="py-3 px-2 text-center font-black">14</td>
+                                <td class="py-3 px-2 text-center">9</td>
+                                <td class="py-3 px-2 text-center">12:11</td>
+                                <td class="py-3 px-2 text-center">+1</td>
+                            </tr>
+                            <tr class="text-gray-200 border-l-4 border-transparent">
+                                <td class="py-3 px-2">#1</td>
+                                <td class="py-3 px-2">Vélez</td>
+                                <td class="py-3 px-2 text-center font-black">17</td>
+                                <td class="py-3 px-2 text-center">9</td>
+                                <td class="py-3 px-2 text-center">12:7</td>
+                                <td class="py-3 px-2 text-center">+5</td>
+                            </tr>
+                            <tr class="text-gray-200 border-l-4 border-transparent">
+                                <td class="py-3 px-2">#2</td>
+                                <td class="py-3 px-2">Defensa</td>
+                                <td class="py-3 px-2 text-center font-black">17</td>
+                                <td class="py-3 px-2 text-center">9</td>
+                                <td class="py-3 px-2 text-center">11:9</td>
+                                <td class="py-3 px-2 text-center">+2</td>
+                            </tr>
+                            <tr class="text-gray-200 border-l-4 border-transparent">
+                                <td class="py-3 px-2">#3</td>
+                                <td class="py-3 px-2">Gimnasia (M)</td>
+                                <td class="py-3 px-2 text-center font-black">16</td>
+                                <td class="py-3 px-2 text-center">9</td>
+                                <td class="py-3 px-2 text-center">14:9</td>
+                                <td class="py-3 px-2 text-center">+5</td>
+                            </tr>
+                            <tr class="text-gray-200 border-l-4 border-transparent">
+                                <td class="py-3 px-2">#4</td>
+                                <td class="py-3 px-2">Instituto</td>
+                                <td class="py-3 px-2 text-center font-black">16</td>
+                                <td class="py-3 px-2 text-center">8</td>
+                                <td class="py-3 px-2 text-center">8:5</td>
+                                <td class="py-3 px-2 text-center">+3</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                
-                <div class="bg-gray-900 px-4 py-3 border-t border-gray-800 flex items-center gap-2 text-xs">
-                    <span class="w-3 h-3 rounded-full bg-cyan-500 inline-block"></span>
-                    <span class="text-gray-300 font-medium">Clasificación a Octavos de Final</span>
-                </div>
             </div>
 
-            <!-- GRUPO B -->
-            <div class="bg-gray-950 rounded-xl shadow-2xl border border-emerald-800/60 overflow-hidden flex flex-col">
-                <div class="bg-emerald-900/80 px-5 py-3.5 border-b border-emerald-800 flex items-center justify-between">
-                    <h3 class="text-lg font-black text-white uppercase tracking-wider">📁 GRUPO B</h3>
+            <!-- Grupo B -->
+            <div class="bg-boca-blue border border-blue-700/50 rounded-3xl shadow-2xl p-6 lg:p-8">
+                <div class="flex items-center justify-between mb-6 border-b border-blue-800/60 pb-4">
+                    <span class="text-xs font-black tracking-widest text-boca-yellow uppercase flex items-center gap-2">📁 GRUPO B</span>
+                    <span class="text-[10px] bg-boca-dark text-cyan-400 px-3 py-1 rounded-lg border border-cyan-500/30 font-mono">Fase de Zonas</span>
                 </div>
-                
-                <div class="overflow-x-auto flex-grow">
-                    <table class="w-full text-left text-sm text-gray-300">
-                        <thead class="bg-gray-900 text-gray-400 uppercase text-xs border-b border-gray-800">
-                            <tr>
-                                <th class="py-2.5 px-3 w-10 text-center">#</th>
-                                <th class="py-2.5 px-3">Equipos</th>
-                                <th class="py-2.5 px-2 text-center font-bold text-white">PTS</th>
-                                <th class="py-2.5 px-2 text-center">J</th>
-                                <th class="py-2.5 px-2 text-center">GOL</th>
-                                <th class="py-2.5 px-2 text-center">+/-</th>
-                                <th class="py-2.5 px-3 text-center">ÚLTIMAS</th>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="text-gray-400 border-b border-blue-800/60 font-mono text-[11px]">
+                                <th class="pb-3 px-2">#</th>
+                                <th class="pb-3 px-2">EQUIPOS</th>
+                                <th class="pb-3 px-2 text-center">PTS</th>
+                                <th class="pb-3 px-2 text-center">J</th>
+                                <th class="pb-3 px-2 text-center">GOL</th>
+                                <th class="pb-3 px-2 text-center">+/-</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-900">
-                            @foreach($grupoB as $index => $row)
-                                <tr class="hover:bg-gray-900/40">
-                                    <td class="py-2.5 px-3 text-center font-semibold text-gray-400">#{{ $index + 1 }}</td>
-                                    <td class="py-2.5 px-3">{{ $row->equipo }}</td>
-                                    <td class="py-2.5 px-2 text-center text-white font-black bg-gray-900/50">{{ $row->puntos }}</td>
-                                    <td class="py-2.5 px-2 text-center text-gray-400">{{ $row->jugados }}</td>
-                                    <td class="py-2.5 px-2 text-center text-gray-400">{{ $row->goles_a_favor }}:{{ $row->goles_en_contra }}</td>
-                                    <td class="py-2.5 px-2 text-center text-gray-400">{{ ($row->goles_a_favor - $row->goles_en_contra) > 0 ? '+'.($row->goles_a_favor - $row->goles_en_contra) : ($row->goles_a_favor - $row->goles_en_contra) }}</td>
-                                    <td class="py-2.5 px-3 text-center">
-                                        <div class="flex justify-center gap-1">
-                                            @foreach(explode(',', $row->ultimas) as $letra)
-                                                <span class="w-5 h-5 text-[10px] font-black rounded flex items-center justify-center 
-                                                    {{ trim($letra) == 'V' ? 'bg-emerald-600 text-white' : (trim($letra) == 'E' ? 'bg-amber-500 text-black' : 'bg-red-600 text-white') }}">
-                                                    {{ trim($letra) }}
-                                                </span>
-                                            @endforeach
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
+                        <tbody class="divide-y divide-blue-900/40 font-medium">
+                            <tr class="text-gray-200 border-l-4 border-transparent">
+                                <td class="py-3 px-2">#1</td>
+                                <td class="py-3 px-2">Argentinos</td>
+                                <td class="py-3 px-2 text-center font-black">18</td>
+                                <td class="py-3 px-2 text-center">9</td>
+                                <td class="py-3 px-2 text-center">13:8</td>
+                                <td class="py-3 px-2 text-center">+5</td>
+                            </tr>
+                            <tr class="text-gray-200 border-l-4 border-transparent">
+                                <td class="py-3 px-2">#2</td>
+                                <td class="py-3 px-2">Sarmiento</td>
+                                <td class="py-3 px-2 text-center font-black">16</td>
+                                <td class="py-3 px-2 text-center">9</td>
+                                <td class="py-3 px-2 text-center">16:13</td>
+                                <td class="py-3 px-2 text-center">+3</td>
+                            </tr>
+                            <tr class="text-gray-200 border-l-4 border-transparent">
+                                <td class="py-3 px-2">#3</td>
+                                <td class="py-3 px-2">Gimnasia</td>
+                                <td class="py-3 px-2 text-center font-black">16</td>
+                                <td class="py-3 px-2 text-center">9</td>
+                                <td class="py-3 px-2 text-center">13:13</td>
+                                <td class="py-3 px-2 text-center">0</td>
+                            </tr>
+                            <tr class="text-gray-200 border-l-4 border-transparent">
+                                <td class="py-3 px-2">#4</td>
+                                <td class="py-3 px-2">Central</td>
+                                <td class="py-3 px-2 text-center font-black">15</td>
+                                <td class="py-3 px-2 text-center">9</td>
+                                <td class="py-3 px-2 text-center">10:8</td>
+                                <td class="py-3 px-2 text-center">+2</td>
+                            </tr>
+                            <tr class="text-gray-200 border-l-4 border-transparent">
+                                <td class="py-3 px-2">#5</td>
+                                <td class="py-3 px-2">Independiente Riv.</td>
+                                <td class="py-3 px-2 text-center font-black">14</td>
+                                <td class="py-3 px-2 text-center">9</td>
+                                <td class="py-3 px-2 text-center">13:13</td>
+                                <td class="py-3 px-2 text-center">0</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                
-                <div class="bg-gray-900 px-4 py-3 border-t border-gray-800 flex items-center gap-2 text-xs">
-                    <span class="w-3 h-3 rounded-full bg-cyan-500 inline-block"></span>
-                    <span class="text-gray-300 font-medium">Clasificación a Octavos de Final</span>
-                </div>
             </div>
 
-        </div>
-        
+        </section>
+
+        <!-- 2. TABLA ANUAL -->
+        <section class="bg-boca-blue border border-blue-700/50 rounded-3xl shadow-2xl p-6 lg:p-8">
+            <div class="flex items-center justify-between mb-6 border-b border-blue-800/60 pb-4">
+                <span class="text-xs font-black tracking-widest text-boca-yellow uppercase flex items-center gap-2">📊 TABLA ANUAL ACUMULADA</span>
+                <span class="text-[10px] bg-boca-dark text-boca-yellow px-3 py-1 rounded-lg border border-boca-yellow/30 font-mono">Clasificación a Copas</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="text-gray-400 border-b border-blue-800/60 font-mono text-[11px]">
+                            <th class="pb-3 px-3">#</th>
+                            <th class="pb-3 px-3">EQUIPO</th>
+                            <th class="pb-3 px-3 text-center">PTS</th>
+                            <th class="pb-3 px-3 text-center">J</th>
+                            <th class="pb-3 px-3 text-center">GOL</th>
+                            <th class="pb-3 px-3 text-center">+/-</th>
+                            <th class="pb-3 px-3 text-center">G</th>
+                            <th class="pb-3 px-3 text-center">E</th>
+                            <th class="pb-3 px-3 text-center">P</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-blue-900/40 font-medium">
+                        <tr class="text-gray-200 border-l-4 border-emerald-500">
+                            <td class="py-3 px-3">1</td>
+                            <td class="py-3 px-3 font-bold">Independiente Riv.</td>
+                            <td class="py-3 px-3 text-center font-black text-white">48</td>
+                            <td class="py-3 px-3 text-center">25</td>
+                            <td class="py-3 px-3 text-center">42:28</td>
+                            <td class="py-3 px-3 text-center">+14</td>
+                            <td class="py-3 px-3 text-center">14</td>
+                            <td class="py-3 px-3 text-center">6</td>
+                            <td class="py-3 px-3 text-center">5</td>
+                        </tr>
+                        <tr class="text-gray-200 border-l-4 border-boca-yellow">
+                            <td class="py-3 px-3">2</td>
+                            <td class="py-3 px-3 font-bold">Argentinos</td>
+                            <td class="py-3 px-3 text-center font-black text-white">47</td>
+                            <td class="py-3 px-3 text-center">25</td>
+                            <td class="py-3 px-3 text-center">30:21</td>
+                            <td class="py-3 px-3 text-center">+9</td>
+                            <td class="py-3 px-3 text-center">13</td>
+                            <td class="py-3 px-3 text-center">8</td>
+                            <td class="py-3 px-3 text-center">4</td>
+                        </tr>
+                        <tr class="text-gray-200 border-l-4 border-boca-yellow">
+                            <td class="py-3 px-3">3</td>
+                            <td class="py-3 px-3 font-bold">Vélez</td>
+                            <td class="py-3 px-3 text-center font-black text-white">45</td>
+                            <td class="py-3 px-3 text-center">25</td>
+                            <td class="py-3 px-3 text-center">30:19</td>
+                            <td class="py-3 px-3 text-center">+11</td>
+                            <td class="py-3 px-3 text-center">11</td>
+                            <td class="py-3 px-3 text-center">12</td>
+                            <td class="py-3 px-3 text-center">2</td>
+                        </tr>
+                        <tr class="bg-blue-900/80 text-boca-yellow font-bold border-l-4 border-cyan-400">
+                            <td class="py-3 px-3">4</td>
+                            <td class="py-3 px-3 flex items-center gap-1.5">Boca Jrs. <span class="text-sm">⭐</span></td>
+                            <td class="py-3 px-3 text-center font-black text-boca-yellow">44</td>
+                            <td class="py-3 px-3 text-center">25</td>
+                            <td class="py-3 px-3 text-center">34:20</td>
+                            <td class="py-3 px-3 text-center">+14</td>
+                            <td class="py-3 px-3 text-center">11</td>
+                            <td class="py-3 px-3 text-center">11</td>
+                            <td class="py-3 px-3 text-center">3</td>
+                        </tr>
+                        <tr class="text-gray-200 border-l-4 border-cyan-400">
+                            <td class="py-3 px-3">5</td>
+                            <td class="py-3 px-3 font-bold">Central</td>
+                            <td class="py-3 px-3 text-center font-black text-white">43</td>
+                            <td class="py-3 px-3 text-center">25</td>
+                            <td class="py-3 px-3 text-center">30:24</td>
+                            <td class="py-3 px-3 text-center">+6</td>
+                            <td class="py-3 px-3 text-center">12</td>
+                            <td class="py-3 px-3 text-center">7</td>
+                            <td class="py-3 px-3 text-center">6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Referencias de Copas -->
+            <div class="mt-6 pt-4 border-t border-blue-800/60 flex flex-wrap gap-4 text-[11px] text-gray-300 font-medium">
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Campeón / Libertadores</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-boca-yellow inline-block"></span> CONMEBOL Libertadores</span>
+                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span> CONMEBOL Sudamericana</span>
+            </div>
+        </section>
+
+        <!-- 3. PROMEDIOS (RELEGATION) -->
+        <section class="bg-boca-blue border border-blue-700/50 rounded-3xl shadow-2xl p-6 lg:p-8">
+            <div class="flex items-center justify-between mb-6 border-b border-blue-800/60 pb-4">
+                <span class="text-xs font-black tracking-widest text-boca-yellow uppercase flex items-center gap-2">📉 TABLA DE PROMEDIOS (DESCENSO)</span>
+                <span class="text-[10px] bg-boca-dark text-gray-300 px-3 py-1 rounded-lg border border-blue-800 font-mono">Temporadas 24, 25 y 26</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="text-gray-400 border-b border-blue-800/60 font-mono text-[11px]">
+                            <th class="pb-3 px-3">#</th>
+                            <th class="pb-3 px-3">EQUIPOS</th>
+                            <th class="pb-3 px-3 text-center">PROM</th>
+                            <th class="pb-3 px-3 text-center">PTS</th>
+                            <th class="pb-3 px-3 text-center">PJ</th>
+                            <th class="pb-3 px-3 text-center">24</th>
+                            <th class="pb-3 px-3 text-center">25</th>
+                            <th class="pb-3 px-3 text-center">26</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-blue-900/40 font-medium">
+                        <tr class="bg-blue-900/80 text-boca-yellow font-bold border-l-4 border-boca-yellow">
+                            <td class="py-3 px-3">1</td>
+                            <td class="py-3 px-3 flex items-center gap-1.5">Boca Jrs. <span class="text-sm">⭐</span></td>
+                            <td class="py-3 px-3 text-center font-black text-boca-yellow">1.765</td>
+                            <td class="py-3 px-3 text-center">173</td>
+                            <td class="py-3 px-3 text-center">98</td>
+                            <td class="py-3 px-3 text-center">67</td>
+                            <td class="py-3 px-3 text-center">62</td>
+                            <td class="py-3 px-3 text-center">44</td>
+                        </tr>
+                        <tr class="text-gray-200 border-l-4 border-transparent">
+                            <td class="py-3 px-3">2</td>
+                            <td class="py-3 px-3">River</td>
+                            <td class="py-3 px-3 text-center font-black">1.684</td>
+                            <td class="py-3 px-3 text-center">165</td>
+                            <td class="py-3 px-3 text-center">98</td>
+                            <td class="py-3 px-3 text-center">70</td>
+                            <td class="py-3 px-3 text-center">53</td>
+                            <td class="py-3 px-3 text-center">42</td>
+                        </tr>
+                        <tr class="text-gray-200 border-l-4 border-transparent">
+                            <td class="py-3 px-3">3</td>
+                            <td class="py-3 px-3">Vélez</td>
+                            <td class="py-3 px-3 text-center font-black">1.643</td>
+                            <td class="py-3 px-3 text-center">161</td>
+                            <td class="py-3 px-3 text-center">98</td>
+                            <td class="py-3 px-3 text-center">76</td>
+                            <td class="py-3 px-3 text-center">40</td>
+                            <td class="py-3 px-3 text-center">45</td>
+                        </tr>
+                        <tr class="text-gray-200 border-l-4 border-transparent">
+                            <td class="py-3 px-3">4</td>
+                            <td class="py-3 px-3">Argentinos</td>
+                            <td class="py-3 px-3 text-center font-black">1.633</td>
+                            <td class="py-3 px-3 text-center">160</td>
+                            <td class="py-3 px-3 text-center">98</td>
+                            <td class="py-3 px-3 text-center">56</td>
+                            <td class="py-3 px-3 text-center">57</td>
+                            <td class="py-3 px-3 text-center">47</td>
+                        </tr>
+                        <tr class="text-gray-200 border-l-4 border-transparent">
+                            <td class="py-3 px-3">5</td>
+                            <td class="py-3 px-3">Central</td>
+                            <td class="py-3 px-3 text-center font-black">1.592</td>
+                            <td class="py-3 px-3 text-center">156</td>
+                            <td class="py-3 px-3 text-center">98</td>
+                            <td class="py-3 px-3 text-center">47</td>
+                            <td class="py-3 px-3 text-center">66</td>
+                            <td class="py-3 px-3 text-center">43</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Referencia de Descenso -->
+            <div class="mt-6 pt-4 border-t border-blue-800/60 flex items-center gap-2 text-[11px] text-gray-300 font-medium">
+                <span class="w-3 h-3 rounded-full bg-red-600 inline-block"></span> Zona de Descenso (Últimos puestos)
+            </div>
+        </section>
+
     </main>
 
-    <footer class="bg-gray-950 text-gray-500 text-center py-6 text-xs border-t border-gray-800 w-full mt-10">
+    <!-- Footer -->
+    <footer class="bg-boca-blue text-gray-300 text-center py-6 text-xs border-t-2 border-blue-800 w-full mt-auto">
         <p>© 2026 Punto de Encuentro — Sitio web de la comunidad del canal de YouTube y TikTok.</p>
     </footer>
 

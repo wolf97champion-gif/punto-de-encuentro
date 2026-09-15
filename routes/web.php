@@ -67,7 +67,7 @@ Route::get('/podio', function () {
     return view('podium');
 });
 
-// Guardar los 3 votos
+// Guardar los 3 votos (Conectado con tu base de datos)
 Route::post('/podio/votar', function (Request $request) {
     $votes = $request->input('votes');
     
@@ -91,7 +91,7 @@ Route::get('/tablas', function () {
     return view('tablas', compact('grupoA', 'grupoB'));
 });
 
-// Panel Admin Dinámico
+// Panel Admin Dinámico (Alimentando perfectamente a tu admin.blade.php)
 Route::get('/admin', function () {
     $results = Vote::select('player_name',
         DB::raw('SUM(CASE WHEN position = 1 THEN 1 ELSE 0 END) as v1'),
@@ -103,7 +103,7 @@ Route::get('/admin', function () {
     ->orderByDesc('points')
     ->get();
 
-    $totalSubmissions = Vote::count() / 3;
+    $totalSubmissions = floor(Vote::count() / 3);
 
     return view('admin', compact('results', 'totalSubmissions'));
 });
