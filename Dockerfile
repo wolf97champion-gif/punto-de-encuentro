@@ -23,18 +23,19 @@ RUN sed -ri -s 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 RUN a2enmod rewrite
 
-# Copiar .env.example, configurar Postgres con el Pooler de Supabase y SSL, dar permisos y generar la key
+# Copiar .env.example, configurar Postgres con SSL, dar permisos y generar la key
 RUN cp .env.example .env \
     && sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=pgsql/' .env \
-    && sed -i 's/DB_HOST=.*/DB_HOST=aws-0-sa-east-1.pooler.supabase.com/' .env \
-    && sed -i 's/DB_PORT=.*/DB_PORT=6543/' .env \
+    && sed -i 's/DB_HOST=.*/DB_HOST=qoloxbgftwuigkxluumf.supabase.co/' .env \
+    && sed -i 's/DB_PORT=.*/DB_PORT=5432/' .env \
     && sed -i 's/DB_DATABASE=.*/DB_DATABASE=postgres/' .env \
-    && sed -i 's/DB_USERNAME=.*/DB_USERNAME=postgres.qoloxbgftwuigkxluumf/' .env \
+    && sed -i 's/DB_USERNAME=.*/DB_USERNAME=postgres/' .env \
     && sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=1q2w3e4r5t6y7u8i9o0pmicha/' .env \
     && echo "DB_SSLMODE=require" >> .env \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 777 storage bootstrap/cache \
-    && php artisan key:generate --force
+    && php artisan key:generate --force \
+    && php artisan config:clear
 
 EXPOSE 10000
 RUN sed -i 's/80/10000/g' /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
