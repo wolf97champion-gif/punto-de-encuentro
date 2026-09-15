@@ -12,15 +12,4 @@ RUN cp .env.example .env
 RUN php artisan key:generate
 
 EXPOSE 10000
-CMD echo "APP_ENV=production" > .env && \
-    echo "APP_DEBUG=true" >> .env && \
-    echo "APP_KEY=" >> .env && \
-    echo "DB_CONNECTION=pgsql" >> .env && \
-    echo "DB_HOST=qoloxbgftwuigkxluumf.supabase.co" >> .env && \
-    echo "DB_PORT=5432" >> .env && \
-    echo "DB_DATABASE=postgres" >> .env && \
-    echo "DB_USERNAME=postgres" >> .env && \
-    echo "DB_PASSWORD=1q2w3e4r5t6y7u8i9o0pmicha" >> .env && \
-    php artisan key:generate --force && \
-    php artisan config:clear && \
-    php artisan serve --host=0.0.0.0 --port=10000
+CMD php artisan config:clear && php -S 0.0.0.0:10000 -t public
