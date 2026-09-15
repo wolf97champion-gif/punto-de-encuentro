@@ -1,14 +1,13 @@
 FROM php:8.2-cli
 RUN apt-get update && apt-get install -y \
-    git unzip libsqlite3-dev \
-    && docker-php-ext-install pdo pdo_sqlite
+    git unzip libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
-# Preparar base de datos y clave de Laravel
-RUN touch database/database.sqlite
+# Configurar clave de Laravel para producción
 RUN cp .env.example .env
 RUN php artisan key:generate
 
