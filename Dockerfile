@@ -23,8 +23,14 @@ RUN sed -ri -s 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 RUN a2enmod rewrite
 
-# Copiar .env.example a .env, dar permisos a storage/cache y generar la key de Laravel
+# Copiar .env.example, configurar Postgres, dar permisos y generar la key
 RUN cp .env.example .env \
+    && sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=pgsql/' .env \
+    && sed -i 's/DB_HOST=.*/DB_HOST=qoloxbgftwuigkxluumf.supabase.co/' .env \
+    && sed -i 's/DB_PORT=.*/DB_PORT=5432/' .env \
+    && sed -i 's/DB_DATABASE=.*/DB_DATABASE=postgres/' .env \
+    && sed -i 's/DB_USERNAME=.*/DB_USERNAME=postgres/' .env \
+    && sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=1q2w3e4r5t6y7u8i9o0pmicha/' .env \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 777 storage bootstrap/cache \
     && php artisan key:generate --force
